@@ -9,6 +9,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', home),
+    path('cases/', include('cases.urls')),
     path('admin/', admin.site.urls),
     path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True)),
     path('accounts/', include('django.contrib.auth.urls')),
