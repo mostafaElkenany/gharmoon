@@ -131,6 +131,8 @@ EMAIL_HOST_PASSWORD = 'pyfund2020'
 #limit token time to one day
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
+CRISPY_TEMPLATE_PACK="bootstrap4"
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
