@@ -23,3 +23,6 @@ class AddCaseForm(forms.ModelForm):
                 'min_value': "Invalid value, target must be greater than zero",
             },
         }
+        widgets = {
+            "convection_date": forms.DateInput(attrs={"type": "date"}),
+        }
