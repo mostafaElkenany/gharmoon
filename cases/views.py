@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import AddCaseForm
 from django.contrib.auth.decorators import login_required
+from .models import Case
 
 # @login_required(login_url='/accounts/login/')
 def add_case(request):
@@ -16,3 +17,8 @@ def add_case(request):
     return render(
         request, "cases/add_case.html", {"form": form},
     )
+
+def show_cases(request):
+    if request.method == "GET":
+        cases = Case.objects.all()
+        return render(request, "cases/show_cases.html", {"cases_list":cases})
