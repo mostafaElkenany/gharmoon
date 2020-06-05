@@ -31,7 +31,7 @@ def view_case(request, id):
                 "case": case,
                 "is_reported": request.user.case_reports.filter(id=case.id).exists(),
                 "case_donations": case_donations,
-                "votes":case_votes['votes'],
+                "votes":case_votes,
                 # "donation_form": DonateForm()
             }
         
@@ -42,8 +42,8 @@ def report_case(request, id):
     if request.method == "POST":
         case = Case.objects.filter(id=id)
         if case.exists():
-            project = project.first()
-            if not request.user.project_reports.filter(id=project.id).exists():
-                request.user.project_reports.add(project)
-            return redirect("view_project", id=project.id)
+            case = case.first()
+            if not request.user.case_reports.filter(id=case.id).exists():
+                request.user.case_reports.add(case)
+            return redirect("view_case", id=case.id)
     return redirect("home")
