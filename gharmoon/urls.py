@@ -16,6 +16,7 @@ urlpatterns = [
     path('accounts/',include('allauth.urls')),
     path('activate/<slug:uidb64>/<slug:token>/', activate, name='activate'),
     path('', home),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()
