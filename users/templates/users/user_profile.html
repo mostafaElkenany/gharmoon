@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block style %}
+<style>
+    .profile-delete-btn {
+        border-radius: 2.5rem;
+        width: 12rem;
+        margin-left: 5rem;
+        margin-bottom: 1rem;
+        padding: 1%;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .profile-edit-btn {
+        border-radius: 2.5rem;
+        width: 12rem;
+        margin-left: 30rem;
+        padding: 1%;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .profile-tab p {
+        font-weight: 600;
+        color: #0062cc;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row my-2">
+        <div class="col-lg-8 order-lg-2">
+            <a href="{% url 'edit_profile' %}" class="btn btn-info profile-edit-btn"><i class="fa fa-edit"> Edit
+                    Profile</i></a>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+                </li>
+            </ul>
+            <div class="tab-content profile-tab py-4">
+                <div class="tab-pane active" id="profile">
+                    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <h4 class="mb-3">{{ user.first_name }} {{ user.last_name }}</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Username</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.username }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>First Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.first_name }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Last Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.last_name }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label><i class="fa fa-envelope" aria-hidden="true"></i> Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.email }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label><i class="fa fa-phone"></i> Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.mobile_phone }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% if not user.socialaccount_set.all.0.uid %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <i class="fa fa-key"></i>
+                                    <a href="{% url 'change_password' %}" class="">Change password</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 order-lg-1 text-center">
+            {% if user.profile_picture %}
+            <img src="../..{{ user.profile_picture.url }}" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+            {% else %}
+            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="mx-auto img-fluid img-circle d-block"
+                alt="avatar" />
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if not user.socialaccount_set.all.0.uid %}
+<a href="{% url 'delete_account' %}" class="btn btn-danger profile-delete-btn"><i class="fa fa-trash"
+        aria-hidden="true"> Delete account</i></a>
+{% endif %}
+
+{% endblock %}
