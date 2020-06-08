@@ -4,6 +4,8 @@ from django.shortcuts import redirect
 from .forms import UserForm, ConfirmPasswordForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from .models import User
+
 
 
 @login_required(login_url='/accounts/login/')
@@ -50,3 +52,13 @@ def delete_account(request):
     else:
         password_form = ConfirmPasswordForm(instance=current_user)
     return render(request, "users/delete_account.html", {"form": password_form})
+
+@login_required(login_url='/accounts/login/')
+def get_cases(request):
+    current_user = request.user
+    user = User.objects.get(id=current_user.id)
+    cases = user.case_set.all()
+    context = {
+        "cases": cases,
+    }
+    return render(request, "users/user_cases.html", context)

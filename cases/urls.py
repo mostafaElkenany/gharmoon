@@ -5,5 +5,4 @@ urlpatterns = [
     path('new', add_case, name='add_case'),
     path('<int:id>', view_case, name='view_case'),
     path('<int:id>/report', report_case, name='report_case'),
-
 ]

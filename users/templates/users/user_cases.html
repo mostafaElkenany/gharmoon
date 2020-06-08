@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <a href="{% url 'add_case' %}" class="btn btn-success" role="button"><i class="fa fa-plus"> Add Case</i></a>
+    <h1> My Cases </h1>
+
+    <!-- Begin Project card -->
+
+
+
+    <div class="row col-lg-12">
+
+        {% for case in cases %}
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="card border-0 shadow mb-4">
+
+                <!-- Card image -->
+                <!-- Card content -->
+                <div class="card-body border rounded-bottom">
+                    <a href="{% url 'view_case' case.id %}" class="card-title">
+                        {{case.name}}
+                    </a>
+                    <!-- <hr> -->
+                    <!-- <div class="card-body"> -->
+                    <p class="card-text">
+                        {{ case.national_id }}
+                    </p>
+                    <hr>
+                    <ul class="list-unstyled d-flex justify-content-between text-center">
+                        <li class="pledged">
+                            <p class="font-weight-bold text-dark body-info">Target</p>
+                            <span class="amount">${{case.total_target}}</span>
+                        </li>
+                    </ul>
+                    <!-- </div> -->
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <h2>Sorry, There are no projects yet.</h2>
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- End Project card -->
+
+
+</div>
+
+{% endblock %}
