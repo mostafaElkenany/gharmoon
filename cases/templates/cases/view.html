@@ -125,40 +125,6 @@
 
 {% block script %}
 <script>
-    // $('#addDonation').on('submit', function (e) {
-    //     e.preventDefault();
-    //     let donationAmount = $('#amount').val()
-    //     let serializedData = $(this).serialize();
-    //     if (donationAmount > 0) {
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: "{% url 'donate' %}",
-    //             data: serializedData,
-    //             success: function (response) {
-    //                 $("#addDonation").trigger('reset');
-    //                 $("#donations").html(response.donations)
-
-    //                 // alert("thank you for your donations")
-    //                 // jQuery('#donateModal').modal('show');
-                    
-    //                 let alert = '<div class="alert alert-success alert-dismissible show" role="alert"><strong>Thanks!</strong> Your donation has been added<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-    //                 $('#content').prepend(alert);
-    //                 $("[data-dismiss=modal]").trigger({ type: "click" });
-
-    //             },
-    //             error: function (response) {
-    //                 alert(response.responseJSON.error)
-    //             }
-    //         })
-    //     } else if (donationAmount < 1) {
-    //         alert("You can't add zero or negative donation")
-    //     }
-    // });
-
-</script>
-
-<script>
-
     (function () {
         moveProgressBar();
         $(window).resize(function () {
