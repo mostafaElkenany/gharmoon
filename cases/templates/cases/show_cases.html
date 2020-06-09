@@ -6,18 +6,26 @@
 <div class="container">
     {% if cases_list %}
     {% for case in cases_list %} 
-    <div class="card" style="width: 18rem; margin-bottom: 4rem;">
-        <a href="#">
-            <div class="card-body">
-                <h5 class="card-title">{{case.name}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Jail: {{case.jail_name}}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">Jail time: {{case.jail_time}}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">Conviction date: {{case.convection_date}}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">Total target: {{case.total_target}}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">Details: </h6>
-                <p class="card-text">{{case.details|safe}}</p>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card border-0 shadow mb-4">
+            <!-- Card image -->
+            <!-- Card content -->
+            <div class="card-body border rounded-bottom">
+                <a href="{% url 'view_case' case.id %}" class="card-title">
+                    {{case.name}}
+                </a>
+                <p class="card-text">
+                    {{ case.national_id }}
+                </p>
+                <hr>
+                <ul class="list-unstyled d-flex justify-content-between text-center">
+                    <li class="pledged">
+                        <p class="text-dark body-info">Target: <span class="amount">${{case.total_target}}</span></p>
+                        
+                    </li>
+                </ul>
             </div>
-        </a>
+        </div>
     </div>
     {% endfor %}
     <div class="pagination">
@@ -29,8 +37,7 @@
     
             <span class="current">
                 Page {{ cases_list.number }} of {{ cases_list.paginator.num_pages }}.
-            </span>
-    
+            </span>    
             {% if cases_list.has_next %}
                 <a href="?page={{ cases_list.next_page_number }}">next</a>
                 <a href="?page={{ cases_list.paginator.num_pages }}">last &raquo;</a>
