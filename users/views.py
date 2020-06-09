@@ -62,3 +62,15 @@ def get_cases(request):
         "cases": cases,
     }
     return render(request, "users/user_cases.html", context)
+
+
+
+@login_required(login_url='/accounts/login/')
+def get_donations(request):
+    current_user = request.user
+    user = User.objects.get(id=current_user.id)
+    donations = user.case_donations.distinct()
+    context = {
+        "donations": donations,
+    }
+    return render(request, "users/user_donations.html", context)
