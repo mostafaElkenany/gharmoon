@@ -31,7 +31,7 @@ def show_cases(request):
         page_obj = paginator.get_page(page_number)
         return render(request, "cases/show_cases.html", {"cases_list":page_obj})
 
-def search(request):
+def advanced_search(request):
     if request.method == "GET":
         return render(request, "cases/search.html")
 
