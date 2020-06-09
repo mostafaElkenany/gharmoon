@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} Search {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Search Results</h1>
+    {% if search_results%}
+    {% for case in search_results %} 
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card border-0 shadow mb-4">
+            <!-- Card image -->
+            <!-- Card content -->
+            <div class="card-body border rounded-bottom">
+                <a href="{% url 'view_case' case.id %}" class="card-title">
+                    {{case.name}}
+                </a>
+                <p class="card-text">
+                    {{ case.national_id }}
+                </p>
+                <hr>
+                <ul class="list-unstyled d-flex justify-content-between text-center">
+                    <li class="pledged">
+                        <p class="text-dark body-info">Target: <span class="amount">${{case.total_target}}</span></p>
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+        <h2>No search results</h2>
+    {% endif %}
+</div>
+{% endblock %}

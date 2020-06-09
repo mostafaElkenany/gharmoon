@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import AddCaseForm
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .models import Case
 from django.db.models import Sum, Avg
 from django.shortcuts import redirect
@@ -22,6 +23,25 @@ def add_case(request):
         request, "cases/add_case.html", {"form": form},
     )
 
+def show_cases(request):
+    if request.method == "GET":
+        cases = Case.objects.all()
+        paginator = Paginator(cases, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, "cases/show_cases.html", {"cases_list":page_obj})
+
+def advanced_search(request):
+    if request.method == "GET":
+        return render(request, "cases/search.html")
+
+def search_cases(request):
+    search_word = request.GET['search_word']
+    cases = Case.objects.filter(name__icontains=search_word)
+    print(cases)
+    return render(
+        request, "cases/search_results.html", {"search_results": cases},
+    )
 
 def view_case(request, id):
     case = Case.objects.get(pk=id)
@@ -36,7 +56,6 @@ def view_case(request, id):
             }
         
     return render(request, "cases/view.html", context)
-
 
 def report_case(request, id):
     if request.method == "POST":

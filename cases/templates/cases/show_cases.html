@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Cases {% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if cases_list %}
+    {% for case in cases_list %} 
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card border-0 shadow mb-4">
+            <!-- Card image -->
+            <!-- Card content -->
+            <div class="card-body border rounded-bottom">
+                <a href="{% url 'view_case' case.id %}" class="card-title">
+                    {{case.name}}
+                </a>
+                <p class="card-text">
+                    {{ case.national_id }}
+                </p>
+                <hr>
+                <ul class="list-unstyled d-flex justify-content-between text-center">
+                    <li class="pledged">
+                        <p class="text-dark body-info">Target: <span class="amount">${{case.total_target}}</span></p>
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if cases_list.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ cases_list.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ cases_list.number }} of {{ cases_list.paginator.num_pages }}.
+            </span>    
+            {% if cases_list.has_next %}
+                <a href="?page={{ cases_list.next_page_number }}">next</a>
+                <a href="?page={{ cases_list.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+        <h1>No Cases added yet</h1>
+    {% endif %}
+</div>    
+{% endblock %}

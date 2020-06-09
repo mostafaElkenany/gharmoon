@@ -33,18 +33,20 @@
         {% if user.is_authenticated %}
         <!-- Collection of nav links, forms, and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
-            <form id="searchForm" class="navbar-form form-inline" action="" method="GET">
+            <form id="searchForm" class="navbar-form form-inline" action="cases/search" method="GET">
                 <div class="input-group search-box">
-                    <input type="text" id="search" name="q" class="form-control" placeholder="Search here...">
+                    <input type="text" id="search" name="search_word" class="form-control" placeholder="Search here...">
                     <button class="input-group-addon" id="searchBox" type="submit"><i
                             class="material-icons">&#xE8B6;</i></button>
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right ml-auto">
-                <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i class="fa fa-home"></i><span>Home</span></a></li>
-                <li class="nav-item"><a href="" class="nav-link"><i class="fa fa-gears"></i><span>Cases</span></a>
+                <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i
+                            class="fa fa-home"></i><span>Home</span></a></li>
+                <li class="nav-item"><a href="{% url 'user_cases'  %}" class="nav-link"><i
+                            class="fa fa-gears"></i><span>Cases</span></a>
                 </li>
-                <li class="nav-item"><a href="" class="nav-link"><i
+                <li class="nav-item"><a href="{% url 'user_donations'  %}" class="nav-link"><i
                             class="fa fa-pie-chart"></i><span>Donations</span></a></li>
                 <li class="nav-item"><a href="{% url 'profile' %}" class="nav-link"><i
                             class="fa fa-user"></i><span>Profile</span></a></li>
@@ -94,11 +96,11 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
