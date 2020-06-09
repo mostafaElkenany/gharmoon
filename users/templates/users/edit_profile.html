@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Case {% endblock %}
+{% block title %} Profile {% endblock %}
 {% block style %}
 <style>
     .container {
@@ -15,19 +15,16 @@
 {% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
-
 <div class="container d-flex justify-content-center">
     <div class="col-7 ">
         <div class="panel panel-primary">
-            <div class="panel-heading text-center">
-                <h3>Create New Case</h3>
-            </div>
+            <div class="panel-heading text-center"><h3>Edit profile</h3></div>
             <div class="panel-body">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{form|crispy}}
                     <div style="text-align: center;">
-                        <button type="submit" class="save btn btn-success"><i class="fa fa-check" aria-hidden="true"> Create</i></button>
+                        <button type="submit" class="save btn btn-success"><i class="fa fa-check" aria-hidden="true"> Save</i></button>
                     </div>
                 </form>
             </div>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} Profile {% endblock %}
+{% block style %}
+<style>
+    .container {
+        padding: 25px 0;
+        max-width: 80%;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, .3)
+    }
+</style>
+{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container d-flex justify-content-center">
+    <div class="col-7 ">
+        <div class="panel panel-danger">
+            <div class="modal-body text-white bg-danger">
+                <h4 style="text-align:center">Are you sure you want to delete your account?<i style="margin-left: 1rem;" class="fa fa-exclamation-triangle"></i></h4>
+            </div>
+            <div class="panel-body">
+                <h3 style="text-align: center;">Confirm password to continue</h3>
+                <form style="text-align: center;" action="" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-danger">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

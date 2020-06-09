@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block title %} Case {% endblock %}
+{% load static %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+{% if case %}
+{% load mathfilters %}
+<div class="container">
+<div class="row">
+    
+    
+    <div style="position: relative;" id="content" class="col-md-8">
+        <div class="row">
+
+            <div>
+                <h1 class="project-title mb-5">{{ case.name }}</h1>
+    
+            </div>
+
+            <div class="ml-auto">
+                <span style="display: inline;" id="current_rating">
+                    {% if case_votes %}
+                    {{ case_votes }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </span>
+
+            </div>
+        </div>
+            <div class="text-secondary">
+                <p class="project-content">{{ case.details|safe }}</p>
+            </div>
+
+        <!-- <div class="modal fade" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Donate</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="addDonation" accept-charset="UTF-8" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="hidden" name="project_id" value="{{project.id}}">
+                        <label for="recipient-name" class="col-form-label">Amount:</label>
+                        {{donation_form|crispy}}
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" onclick="$('#addDonation').submit()" class="btn btn-primary">Add</button>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+        {% else %}
+        <h5 class="text-secondary"> no case found matching your id </h5>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="side-donate p-5">
+            <div class="row">
+                <p><strong
+                        class="total-donations">${% if case_donations.total_amount %}{{ case_donations.total_amount }}{% else %}0{% endif %}</strong>
+                    raised of ${{ case.total_target }} goal</p>
+                <div class="progress-wrap progress" data-progress-percent="{% with percent=case_donations.total_amount|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
+                    <div class="progress-bar progress" style="border-radius: 0;"></div>
+                </div>
+            </div>
+            <div class="row">
+                <button data-toggle="modal" data-target="#donateModal" data-whatever="test" class="btn btn-block btn-success">
+                    Donate
+                </button>
+            </div>
+            <div class="row mt-5">
+                <p><strong>Convection date:</strong> {{ case.convection_date|date:"D, j F, Y" }}</p>
+            </div>
+            <div class="row">
+                <p><strong>Jail Time:</strong> {{ case.jail_time }}</p>
+            </div>
+            <div class="row">
+                <p><strong>Gender:</strong> {{ case.gender}}</p>
+            </div>
+            <div class="row">
+                <p><strong>Age:</strong> {{ case.age }}</p>
+            </div>
+            <div class="row">
+                <p><strong>Jail Name:</strong> {{ case.jail_name }}</p>
+            </div>
+            <div class="row">
+                <p><strong>Governorate:</strong> {{ case.governerate }}</p>
+            </div>
+            <div class="row">
+                <p><strong>Number of Dependents:</strong> {{ case.no_of_dependents}}</p>
+            </div>
+
+            <div class="row report">
+                {% if is_reported %}
+                <button type="submit" class="btn btn-success ml-1" disabled>reported!</button>
+                {% else %}
+                <form action="{% url 'report_case' case.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger ml-1">report</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+   </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+    // $('#addDonation').on('submit', function (e) {
+    //     e.preventDefault();
+    //     let donationAmount = $('#amount').val()
+    //     let serializedData = $(this).serialize();
+    //     if (donationAmount > 0) {
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: "{% url 'donate' %}",
+    //             data: serializedData,
+    //             success: function (response) {
+    //                 $("#addDonation").trigger('reset');
+    //                 $("#donations").html(response.donations)
+
+    //                 // alert("thank you for your donations")
+    //                 // jQuery('#donateModal').modal('show');
+                    
+    //                 let alert = '<div class="alert alert-success alert-dismissible show" role="alert"><strong>Thanks!</strong> Your donation has been added<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+    //                 $('#content').prepend(alert);
+    //                 $("[data-dismiss=modal]").trigger({ type: "click" });
+
+    //             },
+    //             error: function (response) {
+    //                 alert(response.responseJSON.error)
+    //             }
+    //         })
+    //     } else if (donationAmount < 1) {
+    //         alert("You can't add zero or negative donation")
+    //     }
+    // });
+
+</script>
+
+<script>
+
+    (function () {
+        moveProgressBar();
+        $(window).resize(function () {
+            moveProgressBar();
+        });
+
+        // SIGNATURE PROGRESS
+        function moveProgressBar() {
+            console.log("moveProgressBar");
+            var getPercent = ($('.progress-wrap').data('progress-percent') / 100);
+            var getProgressWrapWidth = $('.progress-wrap').width();
+            var progressTotal = getPercent * getProgressWrapWidth;
+            var animationLength = 2500;
+
+            // on page load, animate percentage bar to data percentage length
+            // .stop() used to prevent animation queueing
+            $('.progress-bar').stop().animate({
+                left: progressTotal
+            }, animationLength);
+        }
+    }())
+
+</script>
+
+
+{% endblock %}
