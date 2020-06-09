@@ -15,11 +15,28 @@
                 <h6 class="card-subtitle mb-2 text-muted">Conviction date: {{case.convection_date}}</h6>
                 <h6 class="card-subtitle mb-2 text-muted">Total target: {{case.total_target}}</h6>
                 <h6 class="card-subtitle mb-2 text-muted">Details: </h6>
-                <p class="card-text">{{case.details}}</p>
+                <p class="card-text">{{case.details|safe}}</p>
             </div>
         </a>
     </div>
-    {% endfor %} 
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if cases_list.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ cases_list.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ cases_list.number }} of {{ cases_list.paginator.num_pages }}.
+            </span>
+    
+            {% if cases_list.has_next %}
+                <a href="?page={{ cases_list.next_page_number }}">next</a>
+                <a href="?page={{ cases_list.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
     {% else %}
         <h1>No Cases added yet</h1>
     {% endif %}

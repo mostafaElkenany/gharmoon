@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import AddCaseForm
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .models import Case
 
 # @login_required(login_url='/accounts/login/')
@@ -21,4 +22,7 @@ def add_case(request):
 def show_cases(request):
     if request.method == "GET":
         cases = Case.objects.all()
-        return render(request, "cases/show_cases.html", {"cases_list":cases})
+        paginator = Paginator(cases, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, "cases/show_cases.html", {"cases_list":page_obj})
