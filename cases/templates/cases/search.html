@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} Search {% endblock %}
+
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search_cases' %}" method="get">
+        <input type="text" name="search_word" id="search_word">
+        <input type="submit">
+    </form>
+{% endblock %}

@@ -26,3 +26,15 @@ def show_cases(request):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, "cases/show_cases.html", {"cases_list":page_obj})
+
+def search(request):
+    if request.method == "GET":
+        return render(request, "cases/search.html")
+
+def search_cases(request):
+    search_word = request.GET['search_word']
+    cases = Case.objects.filter(name__icontains=search_word)
+    print(cases)
+    return render(
+        request, "cases/search_results.html", {"search_results": cases},
+    )
