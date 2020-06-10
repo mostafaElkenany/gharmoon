@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
 <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
 {% endblock %}

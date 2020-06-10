@@ -8,6 +8,6 @@ urlpatterns = [
     path('', show_cases, name='show_cases'),
     path('advanced_search', advanced_search, name='advanced_search'),
     path('search', search_cases, name='search_cases'),
-    path('donation', charge, name='donation'),
+    path('<int:id>/donation', charge, name='donation'),
 
 ]
