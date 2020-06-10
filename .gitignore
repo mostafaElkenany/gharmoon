@@ -6,5 +6,7 @@ gharmoon/*.DS_Store
 gharmoon/*.pyc
 gharmoon/pycache
 gharmoon/__pycache__
+gharmoon/__pycache__/*.pyc
+
 media
 __pycache__
