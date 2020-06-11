@@ -1,5 +1,24 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db.models import Sum, Avg
+from users.models import User, Vote
+from cases.models import Case
+
+
+# def home(request):
+#     return render(request, "home.html")
 
 def home(request):
-    return render(request, "home.html")
+    cases = Case.objects.all()
+    latest_cases = Case.objects.all().order_by("-id")[:5]
+
+    high_voted_set = (
+        Vote.objects.values("case_id").annotate(avg_vote=Avg("vote")).order_by("-avg_vote")[:5]
+    )
+
+    context = {
+        "latest_cases": latest_cases,
+        "high_voted_set": high_voted_set,
+        "cases": cases,
+    }
+    return render(request, "home.html", context)

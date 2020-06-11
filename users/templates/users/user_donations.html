@@ -1,6 +1,78 @@
 {% extends 'base.html' %}
 {% block title %} Donations {% endblock %}
+{% block style %}
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+    @import url('https://fonts.googleapis.com/css?family=Noto+Serif:400&text=%E2%80%9C%E2%80%9D%E2%80%98%E2%80%99');
 
+    *,
+    *:before,
+    *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        /* background: #105469; */
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    h1 {
+        font-family: 'Noto Serif', 'Open Sans Condensed', sans-serif;
+        font-size: 3rem;
+        color: #F48930;
+        font-weight: 600;
+    }
+
+    table {
+        background: #012B39;
+        border-radius: 0.25em;
+        border-collapse: collapse;
+        margin: 1em;
+        width: 100%;
+    }
+
+    th {
+        border-bottom: 1px solid #364043;
+        color: #E2B842;
+        font-size: 1.3em;
+        font-weight: 600;
+        padding: 0.5em 1em;
+        text-align: left;
+    }
+
+    td {
+        color: #fff;
+        font-weight: 400;
+        padding: 0.65em 1em;
+    }
+
+    .disabled td {
+        color: #4F5F64;
+    }
+
+    tbody tr {
+        transition: background 0.25s ease;
+        font-family: 'Noto Serif', 'Open Sans Condensed', sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 0.2vw;
+    }
+
+    tbody tr:hover {
+        background: #014055;
+    }
+
+    a:hover {
+        color: red;
+    }
+
+    a {
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="container">
@@ -8,35 +80,37 @@
 
     <!-- Begin Project card -->
     <div class="row col-lg-12">
-
-        {% for case in donations %}
-        <div class="col-lg-4 col-md-6 col-sm-6">
-            <div class="card border-0 shadow mb-4">
-                <!-- Card image -->
-                <!-- Card content -->
-                <div class="card-body border rounded-bottom">
-                    <a href="{% url 'view_case' case.id %}" class="card-title">
-                        {{case.name}}
-                    </a>
-                    <!-- <hr> -->
-                    <!-- <div class="card-body"> -->
-                    <p class="card-text">
-                        {{ case.national_id }}
-                    </p>
-                    <hr>
-                    <ul class="list-unstyled d-flex justify-content-between text-center">
-                        <li class="pledged">
-                            <p class="font-weight-bold text-dark body-info">Target</p>
-                            <span class="amount">${{case.total_target}}</span>
-                        </li>
-                    </ul>
-                    <!-- </div> -->
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <h2>You have no donations yet</h2>
-        {% endfor %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Case Name
+                    <th>Gender
+                    <th>Age
+                    <th>You donated
+                    <th>Target
+                    <th>Action
+            </thead>
+            <tbody>
+                {% for donated_case in cases_donation %}
+                {% for case in donations %}
+                {% if case.id == donated_case.case_id %}
+                <tr>
+                    <td>{{ case.name }}
+                    <td>{{ case.gender }}
+                    <td>{{ case.age }}
+                    <td>${{donated_case.sum_donation}}
+                    <td>${{ case.total_target }}
+                    <td><a href="{% url 'view_case' case.id %}">see more
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                <tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% empty %}
+                    <h2>You have no donations yet</h2>
+                    {% endfor %}
+            </tbody>
+        </table>
 
     </div>
 

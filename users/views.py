@@ -4,7 +4,9 @@ from django.shortcuts import redirect
 from .forms import UserForm, ConfirmPasswordForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from .models import User
+from django.db.models import Sum, Avg
+from .models import User, Donation
+from cases.models import Case
 
 
 
@@ -70,7 +72,9 @@ def get_donations(request):
     current_user = request.user
     user = User.objects.get(id=current_user.id)
     donations = user.case_donations.distinct()
+    cases_donation= Donation.objects.filter(user_id=current_user.id).values('case_id').annotate(sum_donation=Sum("amount"))
     context = {
         "donations": donations,
+        "cases_donation": cases_donation
     }
     return render(request, "users/user_donations.html", context)
