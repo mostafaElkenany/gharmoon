@@ -17,6 +17,11 @@
 
     <title>{% block title %} Gharmoon {% endblock %}</title>
     {% block style %}{% endblock %}
+    <style>
+        .container{
+            margin-top: 30px !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -84,9 +89,7 @@
     </nav>
 
 
-    <div class="container-fluid" style="margin-top: 40px;">
         {% block content %}{% endblock %}
-    </div>
 
     <div class="my-5">
         <div class="footer">

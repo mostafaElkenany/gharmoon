@@ -96,8 +96,14 @@ def charge(request, id):
                 donation.save()
                 messages.success(request, 'Thank You. We received your donation successfully')
                 return redirect(request.META['HTTP_REFERER'])
-            except stripe.CardError as e:
-                messages.info(request, "Your card has been declined.")
+            except stripe.error.CardError as e:
+                messages.error(request, e.error.message )
+                return redirect(request.META['HTTP_REFERER'])
+            except stripe.error.RateLimitError as e:
+                messages.error(request, e.error.message )
+                return redirect(request.META['HTTP_REFERER'])
+            except Exception as e:
+                messages.error(request, "Something went wrong" )
                 return redirect(request.META['HTTP_REFERER'])
         else:
             messages.error(request, "Invalid Amount Input")
