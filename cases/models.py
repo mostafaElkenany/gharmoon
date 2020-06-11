@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator
 from django.db.models.signals import pre_save
 from datetime import datetime
 from django.dispatch import receiver
+from  django.core.validators import RegexValidator
 
 # Create your models here.
 
@@ -42,7 +43,14 @@ class Case(models.Model) :
         ('SUZ', 'Suez'),
     )
     name = models.CharField(max_length=70, null=True)
-    national_id = models.BigIntegerField(null=True)
+    national_id = models.CharField(
+        max_length=14,
+        validators=[
+            RegexValidator('^(2|3)[0-9][1-9][0-1][1-9][0-3][1-9](01|02|03|04|11|12|13|14|15|16|17|18|19|21|22|23|24|25|26|27|28|29|31|32|33|34|35|88)\d\d\d\d\d$',
+        message="please enter a valid egyptian national ID"
+        )],
+        null=True
+        )
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     age = models.IntegerField(null=True, validators = [MinValueValidator(18)])
     jail_name = models.CharField(max_length=70,null=True)
