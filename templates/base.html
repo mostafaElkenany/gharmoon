@@ -37,8 +37,8 @@
             <form id="searchForm" class="navbar-form form-inline" action="cases/search" method="GET">
                 <div class="input-group search-box">
                     <input type="text" id="search" name="search_word" class="form-control" placeholder="Search here...">
-                    <button class="input-group-addon" id="searchBox" type="submit"><i
-                            class="material-icons">&#xE8B6;</i></button>
+                    <button class="input-group-addon" id="searchBox" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right ml-auto">
@@ -64,7 +64,7 @@
                         <li><a href="{% url 'profile' %}" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>
                         </li>
                         <li class="divider dropdown-divider"></li>
-                        <li><a href="{% url 'logout' %}" class="dropdown-item"><i class="material-icons">&#xE8AC;</i>
+                        <li><a href="{% url 'logout' %}" class="dropdown-item"><i class="fa fa-sign-out" aria-hidden="true"></i>
                                 Logout</a>
                         </li>
                     </ul>
