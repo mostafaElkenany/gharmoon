@@ -20,7 +20,7 @@ def add_case(request):
             new_case = form.save(commit=False)
             new_case.owner_id = current_user.id
             new_case.save()
-            
+        return redirect("user_cases")
     else:
         form = AddCaseForm()
     return render(
