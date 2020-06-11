@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static "base/style.css" %}">
     <link rel="stylesheet" href="{% static "base/view-case.css" %}">
+    <script src="https://js.stripe.com/v3/"></script>
 
     <title>{% block title %} Gharmoon {% endblock %}</title>
     {% block style %}{% endblock %}
@@ -83,7 +84,7 @@
     </nav>
 
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 40px;">
         {% block content %}{% endblock %}
     </div>
 

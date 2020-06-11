@@ -5,7 +5,11 @@ from django.core.paginator import Paginator
 from .models import Case
 from django.db.models import Sum, Avg
 from django.shortcuts import redirect
+from users import models
+from django.contrib import messages
 
+import stripe
+stripe.api_key = "sk_test_51GsEMiDFwFxU8fy1lQO5T2G4n7f5rlyfCJ4DeKRvjxqopZBDrWM1N9JEeFq7V85Ef9GM1mkfZNd5W87UG7NxBYzN00cO8PKnYC"
 
 @login_required(login_url='/accounts/login/')
 def add_case(request):
@@ -66,3 +70,35 @@ def report_case(request, id):
                 request.user.case_reports.add(case)
             return redirect("view_case", id=case.id)
     return redirect("home")
+
+def charge(request, id):
+    if request.method == "POST":
+        amount = int(request.POST['amount'])
+        if amount > 0:
+            try:
+                case = Case.objects.get(pk=id)
+                amount = int(request.POST['amount'])
+                user = request.user
+                customer = stripe.Customer.create(
+                    email=user.email,
+                    source=request.POST['stripeToken'],
+                )
+                charge = stripe.Charge.create(
+                    customer=customer,
+                    amount=amount*100,
+                    currency="egp",
+                    description=f"Donation for case {id}",
+                )
+                donation = models.Donation()
+                donation.user = user
+                donation.amount = amount
+                donation.case = case
+                donation.save()
+                messages.success(request, 'Thank You. We received your donation successfully')
+                return redirect(request.META['HTTP_REFERER'])
+            except stripe.CardError as e:
+                messages.info(request, "Your card has been declined.")
+                return redirect(request.META['HTTP_REFERER'])
+        else:
+            messages.error(request, "Invalid Amount Input")
+            return redirect(request.META['HTTP_REFERER'])
