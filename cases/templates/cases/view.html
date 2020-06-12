@@ -38,7 +38,6 @@
     #donate-btn {
         margin: 20px 0;
     }
-    
 </style>
 
 {% endblock %}
@@ -52,11 +51,12 @@
 {% for message in messages %}
 {% if message.tags == "error" %}
 {% else %}
-    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}" alert-dismissible fade show role="alert">{{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-    </div>
+<div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}" alert-dismissible fade show role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -70,7 +70,6 @@
 
                 <div>
                     <h1 class="project-title mb-5">{{ case.name }}</h1>
-
                 </div>
 
                 <div class="ml-auto">
@@ -124,7 +123,8 @@
             <div class="side-donate p-5">
                 <div class="row">
                     <p><strong class="total-donations">
-                            {% if case_donations.total_amount %}{{ case_donations.total_amount }}{% else %}0{% endif %} EGP</strong>
+                            {% if case_donations.total_amount %}{{ case_donations.total_amount }}{% else %}0{% endif %}
+                            EGP</strong>
                         raised of {{ case.total_target }} EGP</p>
                     <div class="progress-wrap progress"
                         data-progress-percent="{% with percent=case_donations.total_amount|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
@@ -134,7 +134,8 @@
                 <form action="{% url 'donation' case.id %}" method="post" id="payment-form">
                     {% csrf_token %}
                     <div class="form-group">
-                        <input type="number" min="1" required class="form-control" name="amount" placeholder="Enter donation amount">
+                        <input type="number" min="1" required class="form-control" name="amount"
+                            placeholder="Enter donation amount">
                         {% if messages %}
                         {% for message in messages %}
                         {% if message.tags == "error" %}
