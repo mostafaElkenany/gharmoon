@@ -7,6 +7,7 @@ from django.db.models import Sum, Avg
 from django.shortcuts import redirect
 from users import models
 from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 import stripe
 stripe.api_key = "sk_test_51GsEMiDFwFxU8fy1lQO5T2G4n7f5rlyfCJ4DeKRvjxqopZBDrWM1N9JEeFq7V85Ef9GM1mkfZNd5W87UG7NxBYzN00cO8PKnYC"
@@ -58,8 +59,11 @@ def view_case(request, id):
                 "votes":case_votes,
                 # "donation_form": DonateForm()
             }
-        
-    return render(request, "cases/view.html", context)
+    if case.is_approved:
+        return render(request, "cases/view.html", context)
+    else:
+        return HttpResponseForbidden("You can't view this Case because it is not approved yet.")
+
 
 def report_case(request, id):
     if request.method == "POST":
