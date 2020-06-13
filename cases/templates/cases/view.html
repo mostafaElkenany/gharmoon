@@ -38,6 +38,10 @@
     #donate-btn {
         margin: 20px 0;
     }
+
+    .voting{
+        margin-bottom: 1rem;
+    }
 </style>
 
 {% endblock %}
@@ -181,14 +185,17 @@
                 <div class="row">
                     <p><strong>Number of Dependents:</strong> {{ case.no_of_dependents}}</p>
                 </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-block btn-primary voting">Vote</button>
+                </div>
 
-                <div class="row report">
+                <div class="form-row row report">
                     {% if is_reported %}
                     <button type="submit" class="btn btn-success ml-1" disabled>reported!</button>
                     {% else %}
                     <form action="{% url 'report_case' case.id %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger ml-1">report</button>
+                        <button type="submit" class="btn btn-danger btn-block">report</button>
                     </form>
                     {% endif %}
                 </div>
@@ -298,6 +305,33 @@
         form.submit();
     }
 
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('.voting').click(function (e) {
+            e.preventDefault();
+            let caseId = {{case.id}};
+
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: '{% url 'vote' %}',
+                data: {'vote': 'voted', 'case_id': caseId,  csrfmiddlewaretoken: '{{ csrf_token }}'},
+                success: function (data) {
+                    if(data.status === "Voted")
+                        $('.voting').text("Voted"); 
+                    else if (data.status === "Unvoted"){
+                        $('.voting').text("Vote"); 
+                    }
+                },
+                error: function (response) {
+                   alert("Something went wrong with your voting");
+                    
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}

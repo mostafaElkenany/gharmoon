@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_case , view_case , report_case, show_cases, advanced_search, search_cases, charge
+from .views import add_case , view_case , report_case, show_cases, advanced_search, search_cases, charge, vote_case
 
 urlpatterns = [
     path('new', add_case, name='add_case'),
@@ -9,5 +9,5 @@ urlpatterns = [
     path('advanced_search', advanced_search, name='advanced_search'),
     path('search', search_cases, name='search_cases'),
     path('<int:id>/donation', charge, name='donation'),
-
+    path('ajax/vote', vote_case, name='vote')
 ]

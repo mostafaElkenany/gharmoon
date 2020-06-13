@@ -3,11 +3,14 @@ from .forms import AddCaseForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Case
+from users.models import Vote
 from django.db.models import Sum, Avg
 from django.shortcuts import redirect
 from users import models
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
+import json
+
 
 import stripe
 stripe.api_key = "sk_test_51GsEMiDFwFxU8fy1lQO5T2G4n7f5rlyfCJ4DeKRvjxqopZBDrWM1N9JEeFq7V85Ef9GM1mkfZNd5W87UG7NxBYzN00cO8PKnYC"
@@ -135,3 +138,29 @@ def charge(request, id):
         else:
             messages.error(request, "Invalid Amount Input")
             return redirect(request.META['HTTP_REFERER'])
+
+
+def vote_case(request):
+        if request.is_ajax and request.method == 'POST':
+            print(request.POST['vote'])
+            if request.POST['vote'] == "voted":
+                case_id = request.POST['case_id']
+                print(case_id)
+                try:
+                    case = Case.objects.get(id=case_id)
+                    try:
+                        vote = Vote.objects.get(user=request.user, case=case)
+                        vote.delete()
+                        return HttpResponse(json.dumps({'status': "Unvoted"}), content_type="application/json", status=200)
+                    except:
+                        vote = Vote()
+                        vote.user = request.user
+                        vote.vote = 1
+                        vote.case = case
+                        vote.save()
+                        return HttpResponse(json.dumps({'status': "Voted"}), content_type="application/json", status=200)
+                except:
+                    return HttpResponse(json.dumps({'error': "Case doesn't exist"}), content_type="application/json", status=404)
+        else:
+            return HttpResponse(json.dumps({'error': "Unauthorized"}), content_type="application/json", status=403)
+    
