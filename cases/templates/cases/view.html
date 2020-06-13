@@ -186,7 +186,11 @@
                     <p><strong>Number of Dependents:</strong> {{ case.no_of_dependents}}</p>
                 </div>
                 <div class="form-row">
-                    <button type="submit" class="btn btn-block btn-primary voting">Vote</button>
+                    {% if voted %}
+                        <button type="submit" class="btn btn-block btn-info voting">Voted</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-block btn-primary voting">Vote</button>
+                    {% endif %}
                 </div>
 
                 <div class="form-row row report">
@@ -319,10 +323,15 @@
                 url: '{% url 'vote' %}',
                 data: {'vote': 'voted', 'case_id': caseId,  csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data) {
-                    if(data.status === "Voted")
-                        $('.voting').text("Voted"); 
+                    if(data.status === "Voted"){
+                        $('.voting').text("Voted");
+                        $('.voting').removeClass("btn-primary")
+                        $('.voting').addClass("btn-info")
+                    }
                     else if (data.status === "Unvoted"){
                         $('.voting').text("Vote"); 
+                        $('.voting').removeClass("btn-info")
+                        $('.voting').addClass("btn-primary")
                     }
                 },
                 error: function (response) {

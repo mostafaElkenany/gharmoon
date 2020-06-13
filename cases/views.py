@@ -78,11 +78,16 @@ def view_case(request, id):
     case = Case.objects.get(pk=id)
     case_donations = case.donation_set.aggregate(total_amount=Sum('amount'))
     case_votes = case.vote_set.aggregate(total_votes=Sum('vote'))
+    try:
+        voted = Vote.objects.get(user=request.user, case=case)
+    except:
+        voted = ""
     context = {
                 "case": case,
                 "is_reported": request.user.case_reports.filter(id=case.id).exists(),
                 "case_donations": case_donations,
                 "votes":case_votes,
+                "voted":voted
                 # "donation_form": DonateForm()
             }
     if case.is_approved:
@@ -142,10 +147,8 @@ def charge(request, id):
 
 def vote_case(request):
         if request.is_ajax and request.method == 'POST':
-            print(request.POST['vote'])
             if request.POST['vote'] == "voted":
                 case_id = request.POST['case_id']
-                print(case_id)
                 try:
                     case = Case.objects.get(id=case_id)
                     try:
