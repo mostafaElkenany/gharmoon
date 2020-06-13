@@ -33,9 +33,9 @@
         {% if user.is_authenticated %}
         <!-- Collection of nav links, forms, and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
-            <form id="searchForm" class="navbar-form form-inline" action="cases/search" method="GET">
+            <form id="searchForm" class="navbar-form form-inline" action="{% url 'search_cases' %}" method="GET">
                 <div class="input-group search-box">
-                    <input type="text" id="search" name="search_word" class="form-control" placeholder="Search here...">
+                    <input type="text" id="search" name="case_name" class="form-control" placeholder="Search here...">
                     <button class="input-group-addon" id="searchBox" type="submit"><i
                             class="material-icons">&#xE8B6;</i></button>
                 </div>
