@@ -3,39 +3,91 @@
 {% block title %} Case {% endblock %}
 {% load static %}
 
+{% block style %}
+<style type="text/css">
+    .StripeElement {
+        box-sizing: border-box;
+
+        height: 40px;
+
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: white;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+
+    .form-row {
+        display: inherit;
+    }
+
+    #donate-btn {
+        margin: 20px 0;
+    }
+</style>
+
+{% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
 
 {% if case %}
 {% load mathfilters %}
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "error" %}
+{% else %}
+<div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}" alert-dismissible fade show role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
 <div class="container">
-<div class="row">
-    
-    
-    <div style="position: relative;" id="content" class="col-md-8">
-        <div class="row">
+    <div class="row">
 
-            <div>
-                <h1 class="project-title mb-5">{{ case.name }}</h1>
-    
-            </div>
 
-            <div class="ml-auto">
-                <span style="display: inline;" id="current_rating">
-                    {% if case_votes %}
-                    {{ case_votes }}
-                    {% else %}
+        <div style="position: relative;" id="content" class="col-md-8">
+            <div class="row">
+
+                <div>
+                    <h1 class="project-title mb-5">{{ case.name }}</h1>
+                </div>
+
+                <div class="ml-auto">
+                    <span style="display: inline;" id="current_rating">
+                        {% if case_votes %}
+                        {{ case_votes }}
+                        {% else %}
                         0
-                    {% endif %}
-                </span>
+                        {% endif %}
+                    </span>
 
+                </div>
             </div>
-        </div>
             <div class="text-secondary">
                 <p class="project-content">{{ case.details|safe }}</p>
             </div>
 
-        <!-- <div class="modal fade" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- <div class="modal fade" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -62,61 +114,87 @@
             </div>
           </div> -->
 
-        {% else %}
-        <h5 class="text-secondary"> no case found matching your id </h5>
-        {% endif %}
-    </div>
+            {% else %}
+            <h5 class="text-secondary"> no case found matching your id </h5>
+            {% endif %}
+        </div>
 
-    <div class="col-md-4">
-        <div class="side-donate p-5">
-            <div class="row">
-                <p><strong
-                        class="total-donations">${% if case_donations.total_amount %}{{ case_donations.total_amount }}{% else %}0{% endif %}</strong>
-                    raised of ${{ case.total_target }} goal</p>
-                <div class="progress-wrap progress" data-progress-percent="{% with percent=case_donations.total_amount|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
-                    <div class="progress-bar progress" style="border-radius: 0;"></div>
+        <div class="col-md-4">
+            <div class="side-donate p-5">
+                <div class="row">
+                    <p><strong class="total-donations">
+                            {% if case_donations.total_amount %}{{ case_donations.total_amount }}{% else %}0{% endif %}
+                            EGP</strong>
+                        raised of {{ case.total_target }} EGP</p>
+                    <div class="progress-wrap progress"
+                        data-progress-percent="{% with percent=case_donations.total_amount|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
+                        <div class="progress-bar progress" style="border-radius: 0;"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <button data-toggle="modal" data-target="#donateModal" data-whatever="test" class="btn btn-block btn-success">
-                    Donate
-                </button>
-            </div>
-            <div class="row mt-5">
-                <p><strong>Convection date:</strong> {{ case.convection_date|date:"D, j F, Y" }}</p>
-            </div>
-            <div class="row">
-                <p><strong>Jail Time:</strong> {{ case.jail_time }}</p>
-            </div>
-            <div class="row">
-                <p><strong>Gender:</strong> {{ case.gender}}</p>
-            </div>
-            <div class="row">
-                <p><strong>Age:</strong> {{ case.age }}</p>
-            </div>
-            <div class="row">
-                <p><strong>Jail Name:</strong> {{ case.jail_name }}</p>
-            </div>
-            <div class="row">
-                <p><strong>Governorate:</strong> {{ case.governerate }}</p>
-            </div>
-            <div class="row">
-                <p><strong>Number of Dependents:</strong> {{ case.no_of_dependents}}</p>
-            </div>
-
-            <div class="row report">
-                {% if is_reported %}
-                <button type="submit" class="btn btn-success ml-1" disabled>reported!</button>
-                {% else %}
-                <form action="{% url 'report_case' case.id %}" method="POST">
+                <form action="{% url 'donation' case.id %}" method="post" id="payment-form">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger ml-1">report</button>
+                    <div class="form-group">
+                        <input type="number" min="1" required class="form-control" name="amount"
+                            placeholder="Enter donation amount">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == "error" %}
+                        <span class="error text-danger">{{ message }}</span>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-row">
+                        <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                        </div>
+
+                        <!-- Used to display form errors. -->
+                        <div id="card-errors" class="error text-danger" role="alert"></div>
+                    </div>
+
+                    <button class="btn btn-block btn-success" id="donate-btn">
+                        Donate
+                    </button>
                 </form>
-                {% endif %}
+                <!-- <button class="btn btn-block btn-success">
+                    Donate
+                </button> -->
+                <div class="row mt-5">
+                    <p><strong>Convection date:</strong> {{ case.convection_date|date:"D, j F, Y" }}</p>
+                </div>
+                <div class="row">
+                    <p><strong>Jail Time:</strong> {{ case.jail_time }}</p>
+                </div>
+                <div class="row">
+                    <p><strong>Gender:</strong> {{ case.gender}}</p>
+                </div>
+                <div class="row">
+                    <p><strong>Age:</strong> {{ case.age }}</p>
+                </div>
+                <div class="row">
+                    <p><strong>Jail Name:</strong> {{ case.jail_name }}</p>
+                </div>
+                <div class="row">
+                    <p><strong>Governorate:</strong> {{ case.governerate }}</p>
+                </div>
+                <div class="row">
+                    <p><strong>Number of Dependents:</strong> {{ case.no_of_dependents}}</p>
+                </div>
+
+                <div class="row report">
+                    {% if is_reported %}
+                    <button type="submit" class="btn btn-success ml-1" disabled>reported!</button>
+                    {% else %}
+                    <form action="{% url 'report_case' case.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger ml-1">report</button>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-   </div>
 
 </div>
 
@@ -125,40 +203,6 @@
 
 {% block script %}
 <script>
-    // $('#addDonation').on('submit', function (e) {
-    //     e.preventDefault();
-    //     let donationAmount = $('#amount').val()
-    //     let serializedData = $(this).serialize();
-    //     if (donationAmount > 0) {
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: "{% url 'donate' %}",
-    //             data: serializedData,
-    //             success: function (response) {
-    //                 $("#addDonation").trigger('reset');
-    //                 $("#donations").html(response.donations)
-
-    //                 // alert("thank you for your donations")
-    //                 // jQuery('#donateModal').modal('show');
-                    
-    //                 let alert = '<div class="alert alert-success alert-dismissible show" role="alert"><strong>Thanks!</strong> Your donation has been added<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-    //                 $('#content').prepend(alert);
-    //                 $("[data-dismiss=modal]").trigger({ type: "click" });
-
-    //             },
-    //             error: function (response) {
-    //                 alert(response.responseJSON.error)
-    //             }
-    //         })
-    //     } else if (donationAmount < 1) {
-    //         alert("You can't add zero or negative donation")
-    //     }
-    // });
-
-</script>
-
-<script>
-
     (function () {
         moveProgressBar();
         $(window).resize(function () {
@@ -182,6 +226,78 @@
     }())
 
 </script>
+<script>
+    // Create a Stripe client.
+    var stripe = Stripe('pk_test_51GsEMiDFwFxU8fy1PFGyPmnrPHyAUhVMhzzk3KdTlqyQOyxivs60clC7uP8T1qsOBG3jpPkqRwpBuLuyu3b76m6e00g5mTlKKz');
 
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', { style: style });
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.on('change', function (event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        form.submit();
+    }
+
+</script>
 
 {% endblock %}

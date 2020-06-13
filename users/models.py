@@ -30,7 +30,8 @@ class Donation(models.Model):
     user= models.ForeignKey('User', null=True, on_delete=models.CASCADE)
     case = models.ForeignKey('cases.Case', null=True, on_delete=models.CASCADE)
     amount = models.FloatField(null=True)
-
+    created = models.DateTimeField(auto_now_add=True)
+    
 class Report(models.Model):
     user= models.ForeignKey('User', null=True, on_delete=models.CASCADE)
     case = models.ForeignKey('cases.Case', null=True, on_delete=models.CASCADE)

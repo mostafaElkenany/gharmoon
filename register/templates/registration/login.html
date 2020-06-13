@@ -3,144 +3,154 @@
 {% block title %} Login {% endblock %}
 {% block style %}
 <style>
-  .container{
-    padding:25px 0;
-    max-width:70%;
-    margin:0 auto;
-    background-color:white;
-    border-radius:3px;
-    box-shadow:0 0 30px rgba(0,0,0,.3)
+  .container {
+    padding: 25px 0;
+    max-width: 70%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .3)
   }
-  .container h1{
-    text-align:center;
-    margin-bottom:25px;
-    font-weight:normal;
-    font-size:5rem;
+
+  .container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: normal;
+    font-size: 5rem;
   }
-  form{
-    width:80%;
-    margin:0 auto;
+
+  form {
+    width: 80%;
+    margin: 0 auto;
   }
-  label{
-    display:block;
-    font-size:14px;
-    opacity:.7;
-    margin-bottom:7px;
+
+  label {
+    display: block;
+    font-size: 14px;
+    opacity: .7;
+    margin-bottom: 7px;
   }
-  input{
-    width:100%;
-    border:none;
-    outline:none;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
   }
- div.group input{
-    opacity:1;
-    padding:10px 0;
-    color:black;
-    border-bottom:1px solid #ccc;
-  } 
-  input[type="submit"]{
-    margin-top:25px;
-    padding:15px;
-    border-radius:25px;
-    background-color:rgba(0,0,0,.85);
-    color:white;
-    box-shadow:0 10px 5px -5px rgba(0,0,0,.4);
-    cursor:pointer;
+
+  div.group input {
+    opacity: 1;
+    padding: 10px 0;
+    color: black;
+    border-bottom: 1px solid #ccc;
   }
-  p{
-    margin:20px 0;
-    text-align:center;
+
+  input[type="submit"] {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, .85);
+    color: white;
+    box-shadow: 0 10px 5px -5px rgba(0, 0, 0, .4);
+    cursor: pointer;
   }
-  .social-login{
-    padding:10px 15px;
-    color:white;
-    width:30%;
-    text-align:center;
-    background-color:#3b5999;
-    border-radius:25px;
-    cursor:pointer;
+
+  p {
+    margin: 20px 0;
+    text-align: center;
   }
+
+  .social-login {
+    padding: 10px 15px;
+    color: white;
+    width: 30%;
+    text-align: center;
+    background-color: #3b5999;
+    border-radius: 25px;
+    cursor: pointer;
+  }
+
   .or-seperator {
     margin: 50px 0 15px;
     text-align: center;
     border-top: 1px solid #e0e0e0;
-}
-.or-seperator b {
+  }
+
+  .or-seperator b {
     padding: 0 10px;
-width: 40px;
-height: 40px;
-font-size: 16px;
-text-align: center;
-line-height: 40px;
-background: #fff;
-display: inline-block;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    background: #fff;
+    display: inline-block;
     border: 1px solid #e0e0e0;
-border-radius: 50%;
+    border-radius: 50%;
     position: relative;
     top: -22px;
     z-index: 1;
-}
-.social-btn .btn {
+  }
+
+  .social-btn .btn {
     color: #fff;
     width: 40%;
     margin: 10px 0 0 15px;
-font-size: 18px;
-border-radius: 50px;
-font-weight: bold;
-border: none;
-transition: all 0.4s;
-}	
-.social-btn .btn:hover {
-opacity: 0.8;
-}
-.social-btn .btn-primary {
-background: #507cc0;
-}
-.social-btn .btn i {
-float: left;
-margin: 3px 10px;
-font-size: 20px;
-}
+    font-size: 18px;
+    border-radius: 50px;
+    font-weight: bold;
+    border: none;
+    transition: all 0.4s;
+  }
+
+  .social-btn .btn:hover {
+    opacity: 0.8;
+  }
+
+  .social-btn .btn-primary {
+    background: #507cc0;
+  }
+
+  .social-btn .btn i {
+    float: left;
+    margin: 3px 10px;
+    font-size: 20px;
+  }
 </style>
 {% endblock %}
 
 
 {% block content %}
-    {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-  <div class="container">
-<!--   
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %} -->
-  
+
+<div class="container">
+
+
   {% if messages %}
   {% for message in messages %}
-      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+  <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}" alert-dismissible fade show role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   {% endfor %}
-  {% endif %}  
+  {% endif %}
 
   {% load crispy_forms_tags %}
 
   {% load socialaccount %}
   <h1>Sign In</h1>
-		<p class="hint-text">Sign up with your social media account or email address</p>
-		<div class="social-btn text-center justify-content-center">
-			<a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-primary btn-lg "><i class="fa fa-facebook"></i>Sign in with Facebook</a>
-        </div>
-		<div class="or-seperator"><b>or</b></div>
+  <p class="hint-text">Sign up with your social media account or email address</p>
+  <div class="social-btn text-center justify-content-center">
+    <a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-primary btn-lg "><i
+        class="fa fa-facebook"></i>Sign in with Facebook</a>
+  </div>
+  <div class="or-seperator"><b>or</b></div>
   <form method="post" class="from-group">
-	{% csrf_token %}
-	{{form|crispy}}
-	<p>Don't have an account? Create one <a href="{% url 'register' %}">here</a></p>
-        <input type="submit" value="Login">
-    </form>
+    {% csrf_token %}
+    {{form|crispy}}
+    <p>Don't have an account? Create one <a href="{% url 'register' %}">here</a></p>
+    <input type="submit" value="Login">
+  </form>
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
