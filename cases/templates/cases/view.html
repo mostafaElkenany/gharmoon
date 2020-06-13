@@ -4,47 +4,10 @@
 {% load static %}
 
 {% block style %}
-<style type="text/css">
-    .StripeElement {
-        box-sizing: border-box;
-
-        height: 40px;
-
-        padding: 10px 12px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        background-color: white;
-        box-shadow: 0 1px 3px 0 #e6ebf1;
-        -webkit-transition: box-shadow 150ms ease;
-        transition: box-shadow 150ms ease;
-    }
-
-    .StripeElement--focus {
-        box-shadow: 0 1px 3px 0 #cfd7df;
-    }
-
-    .StripeElement--invalid {
-        border-color: #fa755a;
-    }
-
-    .StripeElement--webkit-autofill {
-        background-color: #fefde5 !important;
-    }
-
-    .form-row {
-        display: inherit;
-    }
-
-    #donate-btn {
-        margin: 20px 0;
-    }
-
-    .voting{
-        margin-bottom: 1rem;
-    }
-</style>
-
+<link rel="stylesheet" href="{% static "css/donation_form.css" %}">
 {% endblock %}
+
+
 {% block content %}
 {% load crispy_forms_tags %}
 
@@ -90,34 +53,6 @@
             <div class="text-secondary">
                 <p class="project-content">{{ case.details|safe }}</p>
             </div>
-
-            <!-- <div class="modal fade" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Donate</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form id="addDonation" accept-charset="UTF-8" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <input type="hidden" name="project_id" value="{{project.id}}">
-                        <label for="recipient-name" class="col-form-label">Amount:</label>
-                        {{donation_form|crispy}}
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" onclick="$('#addDonation').submit()" class="btn btn-primary">Add</button>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
             {% else %}
             <h5 class="text-secondary"> no case found matching your id </h5>
             {% endif %}
@@ -164,9 +99,6 @@
                 </form>
                 {% else %}
                 {% endif %}
-                <!-- <button class="btn btn-block btn-success">
-                    Donate
-                </button> -->
                 <div class="row">
                     <p><strong>Convection date:</strong> {{ case.convection_date|date:"D, j F, Y" }}</p>
                 </div>
