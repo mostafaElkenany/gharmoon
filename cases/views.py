@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from .models import Case
 from django.db.models import Sum, Avg
 from django.shortcuts import redirect
+from datetime import datetime, timedelta
 
 
 @login_required(login_url='/accounts/login/')
@@ -26,21 +27,44 @@ def add_case(request):
 def show_cases(request):
     if request.method == "GET":
         cases = Case.objects.all()
-        paginator = Paginator(cases, 2)
+        paginator = Paginator(cases, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, "cases/show_cases.html", {"cases_list":page_obj})
 
 def advanced_search(request):
     if request.method == "GET":
-        return render(request, "cases/search.html")
+        return render(request, "cases/advanced_search.html")
 
 def search_cases(request):
-    search_word = request.GET['search_word']
-    cases = Case.objects.filter(name__icontains=search_word)
-    print(cases)
+    name = request.GET.get('case_name', '')
+    jail_name = request.GET.get('jail', '')
+    gender = request.GET.get('gender','')
+    jail_time = request.GET.get('jail_time', '')
+    governerate = request.GET.get('governerate', '')
+   
+    
+    search_data = {
+        "name":name,
+        "jail":jail_name,
+        "gender":gender,
+        "gov":governerate,
+        "time":jail_time,
+        
+    }
+
+
+    cases = Case.objects.filter(
+        name__icontains=search_data['name'],
+        jail_name__icontains=search_data['jail'],
+        gender__icontains=search_data['gender'],
+        governerate__icontains=search_data['gov']
+    )
+    paginator = Paginator(cases, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(
-        request, "cases/search_results.html", {"search_results": cases},
+        request, "cases/search_results.html", {"search_results": page_obj},
     )
 
 def view_case(request, id):
