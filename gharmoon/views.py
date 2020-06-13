@@ -11,7 +11,6 @@ from cases.models import Case
 def home(request):
     cases = Case.objects.filter(is_approved=1)
     latest_cases = Case.objects.filter(is_approved=1).order_by("-id")[:5]
-
     high_voted_set = (
         Vote.objects.values("case_id").annotate(avg_vote=Avg("vote")).order_by("-avg_vote")[:5]
     )

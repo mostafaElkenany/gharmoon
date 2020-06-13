@@ -78,8 +78,8 @@
 
                 <div class="ml-auto">
                     <span style="display: inline;" id="current_rating">
-                        {% if case_votes %}
-                        {{ case_votes }}
+                        {% if votes %}
+                        {{ votes }}
                         {% else %}
                         0
                         {% endif %}
@@ -135,9 +135,10 @@
                         <div class="progress-bar progress" style="border-radius: 0;"></div>
                     </div>
                 </div>
+                {% if case.total_target > case_donations.total_amount %}
                 <form action="{% url 'donation' case.id %}" method="post" id="payment-form">
                     {% csrf_token %}
-                    <div class="form-group">
+                    <div class="form-row mb-2">
                         <input type="number" min="1" required class="form-control" name="amount"
                             placeholder="Enter donation amount">
                         {% if messages %}
@@ -161,10 +162,12 @@
                         Donate
                     </button>
                 </form>
+                {% else %}
+                {% endif %}
                 <!-- <button class="btn btn-block btn-success">
                     Donate
                 </button> -->
-                <div class="row mt-5">
+                <div class="row">
                     <p><strong>Convection date:</strong> {{ case.convection_date|date:"D, j F, Y" }}</p>
                 </div>
                 <div class="row">

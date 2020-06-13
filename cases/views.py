@@ -86,9 +86,8 @@ def view_case(request, id):
                 "case": case,
                 "is_reported": request.user.case_reports.filter(id=case.id).exists(),
                 "case_donations": case_donations,
-                "votes":case_votes,
+                "votes":int(case_votes['total_votes']),
                 "voted":voted
-                # "donation_form": DonateForm()
             }
     if case.is_approved:
         return render(request, "cases/view.html", context)

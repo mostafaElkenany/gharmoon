@@ -14,33 +14,33 @@ class Case(models.Model) :
         ('F', 'Female'),
     )
     GOVERNRATES = ( 
-        ('ALX', 'Alexandria'),
-        ('ASN' ,'Aswan'), 
-        ('AST', 'Asyut' ),
-        ('BH' ,'Beheira' ),
-        ('BNS', 'Beni Suef'), 
-        ('C', 'Cairo' ),
-        ('DK', 'Dakahlia'), 
-        ('DT', 'Damietta' ),
-        ('FYM', 'Faiyum' ),
-        ('GH', 'Gharbia' ),
-        ('GZ', 'Giza' ),
-        ('IS', 'Ismailia'), 
-        ('KFS', 'Kafr El Sheikh'), 
-        ('LX', 'Luxor' ),
-        ('MT', 'Matruh' ),
-        ('MN', 'Minya' ),
-        ('MNF', 'Monufia'), 
-        ('WAD', 'New Valley'), 
-        ('SIN', 'North Sinai'), 
-        ('PTS', 'Port Said'),
-        ('KB','Qalyubia'),
-        ('KN', 'Qena'),
-        ('BA', 'Red Sea'), 
-        ('SHR', 'Sharqia'), 
-        ('SHG', 'Sohag'),
-        ('JS', 'South Sinai'), 
-        ('SUZ', 'Suez'),
+        ('Alexandria', 'Alexandria'),
+        ('Aswan' ,'Aswan'), 
+        ('Asyut', 'Asyut' ),
+        ('Beheira' ,'Beheira' ),
+        ('Beni Suef', 'Beni Suef'), 
+        ('Cairo', 'Cairo' ),
+        ('Dakahlia', 'Dakahlia'), 
+        ('Damietta', 'Damietta' ),
+        ('Faiyum', 'Faiyum' ),
+        ('Gharbia', 'Gharbia' ),
+        ('Giza', 'Giza' ),
+        ('Ismailia', 'Ismailia'), 
+        ('Kafr El Sheikh', 'Kafr El Sheikh'), 
+        ('Luxor', 'Luxor' ),
+        ('Matruh', 'Matruh' ),
+        ('Minya', 'Minya' ),
+        ('Monufia', 'Monufia'), 
+        ('New Valley', 'New Valley'), 
+        ('North Sinai', 'North Sinai'), 
+        ('Port Said', 'Port Said'),
+        ('Qalyubia','Qalyubia'),
+        ('Qena', 'Qena'),
+        ('Red Sea', 'Red Sea'), 
+        ('Sharqia', 'Sharqia'), 
+        ('Sohag', 'Sohag'),
+        ('South Sinai', 'South Sinai'), 
+        ('Suez', 'Suez'),
     )
     name = models.CharField(max_length=70, null=True)
     national_id = models.CharField(
@@ -54,7 +54,7 @@ class Case(models.Model) :
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     age = models.IntegerField(null=True, validators = [MinValueValidator(18)])
     jail_name = models.CharField(max_length=70,null=True)
-    governerate = models.CharField(max_length=3,choices=GOVERNRATES,null=True)
+    governerate = models.CharField(max_length=20,choices=GOVERNRATES,null=True)
     convection_date = models.DateField(null= True, blank=True)
     jail_time = models.IntegerField(null=True, validators = [MinValueValidator(1)])
     no_of_dependents = models.IntegerField(null=True, validators = [MinValueValidator(0)])
