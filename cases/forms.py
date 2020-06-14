@@ -41,6 +41,7 @@ class AddCaseForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         convection_date = cleaned_data.get("convection_date")
-        if convection_date > datetime.date.today():
-            msg = "Convection date should be before or equal current date."
-            self.add_error("convection_date", msg)
+        if convection_date :
+            if convection_date > datetime.date.today():
+                msg = "Convection date should be before or equal current date."
+                self.add_error("convection_date", msg)
