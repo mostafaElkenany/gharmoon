@@ -1,33 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} Profile {% endblock %}
 
 {% block style %}
-<style>
-    .profile-delete-btn {
-        border-radius: 2.5rem;
-        width: 12rem;
-        margin-left: 5rem;
-        margin-bottom: 1rem;
-        padding: 1%;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .profile-edit-btn {
-        border-radius: 2.5rem;
-        width: 12rem;
-        margin-left: 30rem;
-        padding: 1%;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .profile-tab p {
-        font-weight: 600;
-        color: #0062cc;
-    }
-</style>
+<link rel="stylesheet" href="{% static "css/user_profile.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -35,8 +12,8 @@
 <div class="container">
     <div class="row my-2">
         <div class="col-lg-8 order-lg-2">
-            <a href="{% url 'edit_profile' %}" class="btn btn-info profile-edit-btn"><i class="fa fa-edit"> Edit
-                    Profile</i></a>
+            <a href="{% url 'edit_profile' %}" class="btn btn-success profile-edit-btn">
+                <i class="fa fa-edit"> Edit Profile</i></a>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
@@ -44,7 +21,7 @@
             </ul>
             <div class="tab-content profile-tab py-4">
                 <div class="tab-pane active" id="profile">
-                    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane active " id="home" role="tabpanel" aria-labelledby="home-tab">
                         <h4 class="mb-3">{{ user.first_name }} {{ user.last_name }}</h5>
                             <div class="row">
                                 <div class="col-md-6">
@@ -91,7 +68,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <i class="fa fa-key"></i>
-                                    <a href="{% url 'change_password' %}" class="">Change password</a>
+                                    <a href="{% url 'change_password' %}" class="password">Change password</a>
                                 </div>
                             </div>
                             {% endif %}
