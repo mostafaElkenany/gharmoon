@@ -23,8 +23,8 @@ def add_case(request):
         if form.is_valid() :
             new_case = form.save(commit=False)
             new_case.owner_id = current_user.id
-            new_case.save()
-        return redirect("user_cases")
+            test = new_case.save()
+            return redirect("user_cases")
     else:
         form = AddCaseForm()
     return render(
@@ -85,8 +85,8 @@ def view_case(request, id):
     context = {
                 "case": case,
                 "is_reported": request.user.case_reports.filter(id=case.id).exists(),
-                "case_donations": case_donations,
-                "votes":int(case_votes['total_votes']),
+                "case_donations": case_donations['total_amount'] or 0,
+                "votes":int(case_votes['total_votes'] or 0),
                 "voted":voted
             }
     if case.is_approved:

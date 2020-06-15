@@ -12,6 +12,7 @@ a {
     top: 2rem;
     box-shadow: 0 .3125rem 1rem -.1875rem rgba(0,0,0,.2);
     /* height: 100%; */
+    background-color: #f1f1f1;
 }
 
 .total-donations {

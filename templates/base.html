@@ -4,7 +4,7 @@
 <head>
     {% load static %}
 
-
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,500,500i,700" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
@@ -18,78 +18,90 @@
     <title>{% block title %} Gharmoon {% endblock %}</title>
     {% block style %}{% endblock %}
     <style>
-        .container{
+        .container {
             margin-top: 30px !important;
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark">
-        <div class="navbar-header d-flex col">
-            <a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-cube"></i><b>غارمون</b></a>
-            <button type="button" data-target="#navbarCollapse" data-toggle="collapse"
-                class="navbar-toggle navbar-toggler ml-auto">
-                <span class="navbar-toggler-icon"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        {% if user.is_authenticated %}
-        <!-- Collection of nav links, forms, and other content for toggling -->
-        <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
-            <form id="searchForm" class="navbar-form form-inline" action="{% url 'search_cases' %}" method="GET">
-                <div class="input-group search-box">
-                    <input type="text" id="search" name="case_name" class="form-control" placeholder="Search here...">
-                    <button class="input-group-addon" id="searchBox" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="navbar-header d-flex col">
+                    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" /></a>
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse"
+                        class="navbar-toggle navbar-toggler ml-auto">
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
                 </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right ml-auto">
-                <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i
-                            class="fa fa-home"></i><span>Home</span></a></li>
-                <li class="nav-item"><a href="{% url 'user_cases'  %}" class="nav-link"><i
-                            class="fa fa-gears"></i><span>My Cases</span></a>
-                </li>
-                <li class="nav-item"><a href="{% url 'user_donations'  %}" class="nav-link"><i
-                            class="fa fa-pie-chart"></i><span>Donations</span></a></li>
-                <li class="nav-item"><a href="{% url 'profile' %}" class="nav-link"><i
-                            class="fa fa-user"></i><span>Profile</span></a></li>
-                <li class="nav-item dropdown">
-                    <a href="#" data-toggle="dropdown" class="nav-link  user-action">
-                        {% if user.profile_picture %}
-                        <img src="../..{{ user.profile_picture.url }}" class="avatar" alt="Avatar">
-                        {% else %}
-                        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="avatar" alt="Avatar">
-                        {% endif %}
-                        {{user.first_name}}
-                        {{ user.last_name }} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'profile' %}" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>
+                {% if user.is_authenticated %}
+                <!-- Collection of nav links, forms, and other content for toggling -->
+                <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+                    <form id="searchForm" class="navbar-form form-inline" action="{% url 'search_cases' %}"
+                        method="GET">
+                        <div class="input-group search-box">
+                            <input type="text" id="search" name="case_name" class="form-control"
+                                placeholder="Search here...">
+                            <button class="input-group-addon" id="searchBox" type="submit"><i class="fa fa-search"
+                                    aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right ml-auto">
+                        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i
+                                    class="fa fa-home"></i><span>Home</span></a></li>
+                        <li class="nav-item"><a href="{% url 'user_cases'  %}" class="nav-link"><i
+                                    class="fa fa-gears"></i><span>My Cases</span></a>
                         </li>
-                        <li class="divider dropdown-divider"></li>
-                        <li><a href="{% url 'logout' %}" class="dropdown-item"><i class="fa fa-sign-out" aria-hidden="true"></i>
-                                Logout</a>
+                        <li class="nav-item"><a href="{% url 'user_donations'  %}" class="nav-link"><i
+                                    class="fa fa-pie-chart"></i><span>Donations</span></a></li>
+                        <!-- <li class="nav-item"><a href="{% url 'profile' %}" class="nav-link"><i
+                                class="fa fa-user"></i><span>Profile</span></a></li> -->
+                        <li class="nav-item dropdown">
+                            <a href="#" data-toggle="dropdown" class="nav-link  user-action">
+                                {% if user.profile_picture %}
+                                <img src="../..{{ user.profile_picture.url }}" class="avatar" alt="Avatar">
+                                {% else %}
+                                <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="avatar"
+                                    alt="Avatar">
+                                {% endif %}
+                                {{user.first_name}}
+                                <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'profile' %}" class="dropdown-item"><i class="fa fa-user-o"></i>
+                                        Profile</a>
+                                </li>
+                                <li class="divider dropdown-divider"></li>
+                                <li><a href="{% url 'logout' %}" class="dropdown-item"><i class="fa fa-sign-out"
+                                            aria-hidden="true"></i>
+                                        Logout</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
-                </li>
-            </ul>
+                </div>
+                {% else %}
+                <a class="btn btn-outline-primary" href="{% url 'login' %}" role="button">
+                    Login
+                </a>
+                <div style="padding-left: 10px;">
+                    <a class="btn btn-outline-success" href="{% url 'register' %}" role="button">
+                        Sign Up
+                    </a>
+                </div>
+                {% endif %}
+            </nav>
         </div>
-        {% else %}
-        <a class="btn btn-outline-primary" href="{% url 'login' %}" role="button">
-            Login
-        </a>
-        <div style="padding-left: 10px;">
-            <a class="btn btn-outline-success" href="{% url 'register' %}" role="button">
-                Sign Up
-            </a>
-        </div>
-        {% endif %}
-    </nav>
+
+    </header>
 
 
-        {% block content %}{% endblock %}
+
+    {% block content %}{% endblock %}
 
     <div class="my-5">
         <div class="footer">
@@ -102,13 +114,13 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
     {% block script %}{% endblock %}
 

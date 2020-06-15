@@ -62,15 +62,15 @@
             <div class="side-donate p-5">
                 <div class="row">
                     <p><strong class="total-donations">
-                            {% if case_donations.total_amount %}{{ case_donations.total_amount }}{% else %}0{% endif %}
+                            {% if case_donations %}{{ case_donations }}{% else %}0{% endif %}
                             EGP</strong>
                         raised of {{ case.total_target }} EGP</p>
                     <div class="progress-wrap progress"
-                        data-progress-percent="{% with percent=case_donations.total_amount|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
+                        data-progress-percent="{% with percent=case_donations|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
                         <div class="progress-bar progress" style="border-radius: 0;"></div>
                     </div>
                 </div>
-                {% if case.total_target > case_donations.total_amount %}
+                {% if case.total_target > case_donations %}
                 <form action="{% url 'donation' case.id %}" method="post" id="payment-form">
                     {% csrf_token %}
                     <div class="form-row mb-2">
