@@ -23,7 +23,7 @@ def add_case(request):
         if form.is_valid() :
             new_case = form.save(commit=False)
             new_case.owner_id = current_user.id
-            test = new_case.save()
+            new_case.save()
             return redirect("user_cases")
     else:
         form = AddCaseForm()
