@@ -8,6 +8,9 @@
     margin-top: 4.5rem;
     position: relative;
 }
+.card-item p {
+    word-break: break-word
+}
 .card-votes {
     position: absolute;
     top: 1rem;
