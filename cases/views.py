@@ -24,7 +24,7 @@ def add_case(request):
             new_case = form.save(commit=False)
             new_case.owner_id = current_user.id
             new_case.save()
-        return redirect("user_cases")
+            return redirect("user_cases")
     else:
         form = AddCaseForm()
     return render(
@@ -39,11 +39,13 @@ def show_cases(request):
         page_obj = paginator.get_page(page_number)
         return render(request, "cases/show_cases.html", {"cases_list":page_obj})
 
+@login_required(login_url='/accounts/login/')
 def advanced_search(request):
     if request.method == "GET":
         form = SearchCaseForm()
     return render(request, "cases/advanced_search.html", {"form": form})
 
+@login_required(login_url='/accounts/login/')
 def search_cases(request):
     name = request.GET.get('case_name', '')
     jail_name = request.GET.get('jail', '')
@@ -73,6 +75,7 @@ def search_cases(request):
         request, "cases/search_results.html", {"search_results": page_obj},
     )
 
+@login_required(login_url='/accounts/login/')
 def view_case(request, id):
     case = Case.objects.get(pk=id)
     case_donations = case.donation_set.aggregate(total_amount=Sum('amount'))
@@ -86,8 +89,8 @@ def view_case(request, id):
     context = {
                 "case": case,
                 "is_reported": request.user.case_reports.filter(id=case.id).exists(),
-                "case_donations": case_donations,
-                "votes":int(case_votes['total_votes']),
+                "case_donations": case_donations['total_amount'] or 0,
+                "votes":int(case_votes['total_votes'] or 0),
                 "voted":voted
             }
     if case.is_approved:
@@ -96,6 +99,7 @@ def view_case(request, id):
         return HttpResponseForbidden("You can't view this Case because it is not approved yet.")
 
 
+@login_required(login_url='/accounts/login/')
 def report_case(request, id):
     if request.method == "POST":
         case = Case.objects.filter(id=id)
@@ -106,6 +110,8 @@ def report_case(request, id):
             return redirect("view_case", id=case.id)
     return redirect("home")
 
+
+@login_required(login_url='/accounts/login/')
 def charge(request, id):
     if request.method == "POST":
         amount = int(request.POST['amount'])
@@ -144,7 +150,7 @@ def charge(request, id):
             messages.error(request, "Invalid Amount Input")
             return redirect(request.META['HTTP_REFERER'])
 
-
+@login_required(login_url='/accounts/login/')
 def vote_case(request):
         if request.is_ajax and request.method == 'POST':
             if request.POST['vote'] == "voted":

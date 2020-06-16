@@ -7,6 +7,6 @@ gharmoon/*.pyc
 gharmoon/pycache
 gharmoon/__pycache__
 gharmoon/__pycache__/*.pyc
-
+.env
 media
 __pycache__
