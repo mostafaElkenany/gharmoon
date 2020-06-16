@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import AddCaseForm
+from .forms import AddCaseForm, SearchCaseForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Case
@@ -41,7 +41,8 @@ def show_cases(request):
 
 def advanced_search(request):
     if request.method == "GET":
-        return render(request, "cases/advanced_search.html")
+        form = SearchCaseForm()
+    return render(request, "cases/advanced_search.html", {"form": form})
 
 def search_cases(request):
     name = request.GET.get('case_name', '')
@@ -49,23 +50,21 @@ def search_cases(request):
     gender = request.GET.get('gender','')
     jail_time = request.GET.get('jail_time', '')
     governerate = request.GET.get('governerate', '')
-   
-    
+
     search_data = {
         "name":name,
         "jail":jail_name,
         "gender":gender,
         "gov":governerate,
-        "time":jail_time,
-        
+        "time":jail_time,        
     }
-
 
     cases = Case.objects.filter(
         name__icontains=search_data['name'],
         jail_name__icontains=search_data['jail'],
         gender__icontains=search_data['gender'],
-        governerate__icontains=search_data['gov']
+        governerate__icontains=search_data['gov'],
+        is_approved=True
     )
     paginator = Paginator(cases, 5)
     page_number = request.GET.get('page')
@@ -78,6 +77,8 @@ def view_case(request, id):
     case = Case.objects.get(pk=id)
     case_donations = case.donation_set.aggregate(total_amount=Sum('amount'))
     case_votes = case.vote_set.aggregate(total_votes=Sum('vote'))
+    if not case_votes['total_votes']:
+        case_votes['total_votes'] = "0"
     try:
         voted = Vote.objects.get(user=request.user, case=case)
     except:
@@ -153,14 +154,18 @@ def vote_case(request):
                     try:
                         vote = Vote.objects.get(user=request.user, case=case)
                         vote.delete()
-                        return HttpResponse(json.dumps({'status': "Unvoted"}), content_type="application/json", status=200)
+                        case_votes = case.vote_set.aggregate(total_votes=Sum('vote'))
+                        if not case_votes['total_votes']:
+                            case_votes['total_votes'] = "0"
+                        return HttpResponse(json.dumps({'status': "Unvoted", "case_votes":case_votes['total_votes']}), content_type="application/json", status=200)
                     except:
                         vote = Vote()
                         vote.user = request.user
                         vote.vote = 1
                         vote.case = case
                         vote.save()
-                        return HttpResponse(json.dumps({'status': "Voted"}), content_type="application/json", status=200)
+                        case_votes = case.vote_set.aggregate(total_votes=Sum('vote'))
+                        return HttpResponse(json.dumps({'status': "Voted", "case_votes":case_votes['total_votes']}), content_type="application/json", status=200)
                 except:
                     return HttpResponse(json.dumps({'error': "Case doesn't exist"}), content_type="application/json", status=404)
         else:

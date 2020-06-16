@@ -5,6 +5,9 @@
 
 {% block style %}
 <style type="text/css">
+    body{
+        box-sizing: border-box;
+    }
     .StripeElement {
         box-sizing: border-box;
 
@@ -41,6 +44,26 @@
 
     .voting{
         margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+
+    .vote-number{
+        padding-top: 1rem;
+    }
+
+    .upvote{
+        font-size: 2em;
+        padding-top: 0.7rem;
+        text-align: center;
+    }
+
+    .upvote:hover{
+        cursor: pointer;
+    }
+
+    .voted{
+        color: #fa755a;
     }
 </style>
 
@@ -74,17 +97,6 @@
 
                 <div>
                     <h1 class="project-title mb-5">{{ case.name }}</h1>
-                </div>
-
-                <div class="ml-auto">
-                    <span style="display: inline;" id="current_rating">
-                        {% if votes %}
-                        {{ votes }}
-                        {% else %}
-                        0
-                        {% endif %}
-                    </span>
-
                 </div>
             </div>
             <div class="text-secondary">
@@ -188,11 +200,17 @@
                 <div class="row">
                     <p><strong>Number of Dependents:</strong> {{ case.no_of_dependents}}</p>
                 </div>
-                <div class="form-row">
+                <div class="form-row ">
                     {% if voted %}
-                        <button type="submit" class="btn btn-block btn-info voting">Voted</button>
-                    {% else %}
-                        <button type="submit" class="btn btn-block btn-primary voting">Vote</button>
+                        <div class="row voting voted">
+                            <i class="fa fa-arrow-up upvote col-sm-2" aria-hidden="true"></i>
+                            <p class="vote-number col-sm-5">{{votes}} votes</p>
+                        </div>
+                        {% else %}
+                        <div class="row voting">
+                            <i class="fa fa-arrow-up upvote col-sm-2" aria-hidden="true"></i>
+                            <p class="vote-number col-sm-5">{{votes}} votes</p>
+                        </div>
                     {% endif %}
                 </div>
 
@@ -316,7 +334,7 @@
 
 <script>
     $(document).ready(function(){
-        $('.voting').click(function (e) {
+        $('.upvote').click(function (e) {
             e.preventDefault();
             let caseId = {{case.id}};
 
@@ -327,14 +345,12 @@
                 data: {'vote': 'voted', 'case_id': caseId,  csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data) {
                     if(data.status === "Voted"){
-                        $('.voting').text("Voted");
-                        $('.voting').removeClass("btn-primary")
-                        $('.voting').addClass("btn-info")
+                        $('.voting').toggleClass('voted')
+                        $('.vote-number').text(data.case_votes + " votes")
                     }
                     else if (data.status === "Unvoted"){
-                        $('.voting').text("Vote"); 
-                        $('.voting').removeClass("btn-info")
-                        $('.voting').addClass("btn-primary")
+                        $('.voting').toggleClass('voted')
+                        $('.vote-number').text(data.case_votes + " votes")
                     }
                 },
                 error: function (response) {
