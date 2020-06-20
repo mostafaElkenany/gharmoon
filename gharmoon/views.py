@@ -14,10 +14,11 @@ def home(request):
     high_voted_set = (
         Vote.objects.values("case_id").annotate(avg_vote=Avg("vote")).order_by("-avg_vote")[:5]
     )
-
+    featured_cases = Case.objects.filter(is_featured=1)
     context = {
         "latest_cases": latest_cases,
         "high_voted_set": high_voted_set,
         "cases": cases,
+        "featured_cases": featured_cases,
     }
     return render(request, "home.html", context)
