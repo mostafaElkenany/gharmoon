@@ -1,52 +1,123 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Search {% endblock %}
+{% load custom_filters %}
+{% load mathfilters %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static "css/case-card.css" %}">
+<style>
+    .progress {
+        border-radius: 0;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container">
     <h1>Search Results</h1>
     {% if search_results%}
-    {% for case in search_results %} 
-    <div class="col-lg-4 col-md-6 col-sm-6">
-        <div class="card border-0 shadow mb-4">
-            <!-- Card image -->
-            <!-- Card content -->
-            <div class="card-body border rounded-bottom">
-                <a href="{% url 'view_case' case.id %}" class="card-title">
-                    {{case.name}}
-                </a>
-                <p class="card-text">
-                    {{ case.national_id }}
-                </p>
-                <hr>
-                <ul class="list-unstyled d-flex justify-content-between text-center">
-                    <li class="pledged">
-                        <p class="text-dark body-info">Target: <span class="amount">${{case.total_target}}</span></p>
-                        
-                    </li>
-                </ul>
+    <div class="mt-5 d-flex flex-wrap justify-content-around">
+        {% for case in search_results %}
+
+
+        <div class="card-item">
+            <span class="card-votes"><i class="fa fa-thumbs-up text-primary"></i> {{ case|total_votes }}</span>
+            <div class="profile profile-smallimg">
+                <div class="profile__image"><img src="{% static 'images/default-user.png' %}" alt="Doggo" /></div>
+                <div class="profile__info">
+                    <h3>{{case.name}}</h3>
+                    <p class="profile__info__extra">
+                        {{ case.details|striptags|truncatechars:50 }}
+                    </p>
+                </div>
+                <div class="profile__stats d-flex flex-wrap justify-content-around">
+                    <span>
+                        <p class="profile__stats__title">Age</p>
+                        <h5 class="profile__stats__info">{{case.age}}</h5>
+                    </span>
+                    <span>
+                        <p class="profile__stats__title">Target</p>
+                        <h5 class="profile__stats__info">{{case.total_target}} LE</h5>
+                    </span>
+                </div>
+                <div class="profile__stats">
+                    <p class="profile__stats__title">Size</p>
+                    <h5>Medium</h5>
+                </div>
+                <div class="profile__stats">
+                    <p class="profile__stats__title">Weight</p>
+                    <h5 class="profile__stats__info">45.85 lbs</h5>
+                </div>
+                <div class="profile__cta">
+                    <div class="progress-wrap progress"
+                        data-progress-percent="{% with percent=case|case_donations|div:case.total_target %}{{ percent|mul:100 }}{% endwith %}">
+                        <div class="progress-bar progress" style="border-radius: 0;"></div>
+                    </div>
+
+                    <a href="{% url 'view_case' case.id %}" class="button">View</a>
+                </div>
             </div>
         </div>
+
+        {% endfor %}
     </div>
-    {% endfor %}
     <div class="pagination">
         <span class="step-links">
             {% if search_results.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ search_results.previous_page_number }}">previous</a>
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ search_results.previous_page_number }}">previous</a>
             {% endif %}
-    
+
             <span class="current">
                 Page {{ search_results.number }} of {{ search_results.paginator.num_pages }}.
-            </span>    
+            </span>
             {% if search_results.has_next %}
-                <a href="?page={{ search_results.next_page_number }}">next</a>
-                <a href="?page={{ search_results.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ search_results.next_page_number }}">next</a>
+            <a href="?page={{ search_results.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
         </span>
     </div>
     {% else %}
-        <h2>No search results</h2>
+    <h2>No search results</h2>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+    (function () {
+
+        moveProgressBar();
+        $(window).resize(function () {
+            moveProgressBar();
+        });
+        function moveProgressBar() {
+            $('.progress-wrap').each(function () {
+
+                var getPercent = ($(this).data('progress-percent') / 100);
+                var getProgressWrapWidth = $(this).width();
+                var progressTotal = getPercent * getProgressWrapWidth;
+                var animationLength = 2500;
+
+                // on page load, animate percentage bar to data percentage length
+                // .stop() used to prevent animation queueing
+                $(this).find('.progress-bar').stop().animate({
+                    left: progressTotal
+                }, animationLength);
+
+
+
+            });
+
+
+        }
+    }())
+
+</script>
+
 {% endblock %}

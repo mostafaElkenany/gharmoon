@@ -10,8 +10,8 @@ from  django.core.validators import RegexValidator
 
 class Case(models.Model) :
     GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
     )
     GOVERNRATES = ( 
         ('Alexandria', 'Alexandria'),
@@ -51,7 +51,7 @@ class Case(models.Model) :
         )],
         null=True
         )
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
     age = models.IntegerField(null=True, validators = [MinValueValidator(18)])
     jail_name = models.CharField(max_length=70,null=True)
     governerate = models.CharField(max_length=20,choices=GOVERNRATES,null=True)

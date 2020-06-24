@@ -45,3 +45,32 @@ class AddCaseForm(forms.ModelForm):
             if convection_date > datetime.date.today():
                 msg = "Convection date should be before or equal current date."
                 self.add_error("convection_date", msg)
+
+class SearchCaseForm(forms.ModelForm):
+    
+    GENDER = Case.GENDER_CHOICES
+    GENDER = (('', '----'),) + GENDER
+
+    GOVERNRATES = Case.GOVERNRATES
+    GOVERNRATES = (('', '----'),) + GOVERNRATES
+    
+    name = forms.CharField(required=False)
+    gender = forms.ChoiceField(required=False, choices=GENDER)
+    governerate = forms.ChoiceField(required=False, choices=GOVERNRATES)
+    jail_name = forms.CharField(required=False)
+    jail_time = forms.IntegerField(required=False)
+    no_of_dependents = forms.IntegerField(required=False)
+    total_target = forms.IntegerField(required=False)
+    
+    class Meta:
+        model = Case
+        fields = (
+        "name",
+        "gender",
+        "governerate",
+        "jail_name",
+        "jail_time",
+        "no_of_dependents",
+        "total_target",
+        )
+        

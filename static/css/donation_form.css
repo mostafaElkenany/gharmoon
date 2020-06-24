@@ -34,4 +34,24 @@
 
 .voting{
     margin-bottom: 1rem;
+    text-align: center;
+}
+
+
+.vote-number{
+    padding-top: 1rem;
+}
+
+.upvote{
+    font-size: 2em;
+    padding-top: 0.7rem;
+    text-align: center;
+}
+
+.upvote:hover{
+    cursor: pointer;
+}
+
+.voted{
+    color: #fa755a;
 }
