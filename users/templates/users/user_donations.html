@@ -19,7 +19,8 @@
         font-family: 'Open Sans', sans-serif;
     }
 
-    h1 {
+    h1,
+    h5 {
         font-family: 'Noto Serif', 'Open Sans Condensed', sans-serif;
         font-size: 3rem;
         color: #F48930;
@@ -99,6 +100,7 @@
                     <td>{{ case.gender }}
                     <td>{{ case.age }}
                     <td>${{donated_case.sum_donation}}
+                        <i class="fa fa-location-arrow" data-toggle="modal" data-target=".bd-example-modal-lg"></i>
                     <td>${{ case.total_target }}
                     <td><a href="{% url 'view_case' case.id %}">see more
                             <i class="fa fa-angle-right"></i>
@@ -115,6 +117,57 @@
     </div>
 
     <!-- End Project card -->
+
+
+    <!-- Begin Modal -->
+
+
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Case Donations Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Case Name
+                                <th>Donation
+                                <th>At
+                        </thead>
+                        <tbody>
+                            {% for donated_case in user_all_donations %}
+                            {% for case in donations %}
+                            {% if case.id == donated_case.case_id %}
+                            <tr>
+                                <td>{{ case.name }}
+                                <td>${{donated_case.amount}}
+                                <td>${{donated_case.created}}
+                            <tr>
+                                {% endif %}
+                                {% endfor %}
+                                {% empty %}
+                                <h2>You have no donations yet</h2>
+                                {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- End Modal -->
+
+
+
 
 
 </div>
