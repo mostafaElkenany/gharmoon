@@ -68,6 +68,10 @@ class Case(models.Model) :
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('view_case', args=[str(self.id)])
+
 #a trigger to auto update featuring date when the project is featured
 @receiver(pre_save, sender=Case)
 def update_case_on_save(sender, instance, **kwargs):
