@@ -27,7 +27,7 @@ class Vote(models.Model):
     vote = models.FloatField(null=True)
 
 class Donation(models.Model):
-    user= models.ForeignKey('User', null=True, on_delete=models.CASCADE)
+    user= models.ForeignKey('User', null=True, on_delete=models.SET_NULL)
     case = models.ForeignKey('cases.Case', null=True, on_delete=models.CASCADE)
     amount = models.FloatField(null=True)
     created = models.DateTimeField(auto_now_add=True)
