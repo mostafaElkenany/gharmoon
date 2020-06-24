@@ -60,7 +60,7 @@ class Case(models.Model) :
     no_of_dependents = models.IntegerField(null=True, validators = [MinValueValidator(0)])
     total_target = models.FloatField(null=True, validators = [MinValueValidator(0.1)])
     details = HTMLField(null=True)
-    owner = models.ForeignKey('users.User', null=True, on_delete=models.CASCADE)
+    owner = models.ForeignKey('users.User', null=True, on_delete=models.SET_NULL)
     is_approved= models.BooleanField(null=True,blank=True)
     is_featured= models.BooleanField(null=True,blank=True)
     featuring_date= models.DateTimeField(null=True,blank=True)
