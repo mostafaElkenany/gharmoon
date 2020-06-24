@@ -73,8 +73,10 @@ def get_donations(request):
     user = User.objects.get(id=current_user.id)
     donations = user.case_donations.distinct()
     cases_donation= Donation.objects.filter(user_id=current_user.id).values('case_id').annotate(sum_donation=Sum("amount"))
+    user_all_donations = Donation.objects.filter(user_id=current_user.id)
     context = {
         "donations": donations,
-        "cases_donation": cases_donation
+        "cases_donation": cases_donation,
+        "user_all_donations": user_all_donations
     }
     return render(request, "users/user_donations.html", context)
