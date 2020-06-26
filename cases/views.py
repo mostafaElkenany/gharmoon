@@ -119,7 +119,7 @@ def charge(request, id):
         amount = int(request.POST['amount'])
         if amount > 0:
             try:
-                case = Case.objects.get(pk=id)
+                case = Case.objects.get(pk=id, is_completed=False)
                 amount = int(request.POST['amount'])
                 user = request.user
                 customer = stripe.Customer.create(
