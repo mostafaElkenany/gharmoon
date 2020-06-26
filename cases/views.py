@@ -33,7 +33,7 @@ def add_case(request):
 
 def show_cases(request):
     if request.method == "GET":
-        cases = Case.objects.all()
+        cases = Case.objects.filter(is_approved=1, is_completed=False)
         paginator = Paginator(cases, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -66,7 +66,8 @@ def search_cases(request):
         jail_name__icontains=search_data['jail'],
         gender__icontains=search_data['gender'],
         governerate__icontains=search_data['gov'],
-        is_approved=True
+        is_approved=True,
+        is_completed=False
     )
     paginator = Paginator(cases, 5)
     page_number = request.GET.get('page')
@@ -78,6 +79,7 @@ def search_cases(request):
 @login_required(login_url='/accounts/login/')
 def view_case(request, id):
     case = Case.objects.get(pk=id)
+    is_owner = True if case.owner == request.user else False
     case_donations = case.donation_set.aggregate(total_amount=Sum('amount'))
     case_votes = case.vote_set.aggregate(total_votes=Sum('vote'))
     if not case_votes['total_votes']:
@@ -93,16 +95,16 @@ def view_case(request, id):
                 "votes":int(case_votes['total_votes'] or 0),
                 "voted":voted
             }
-    if case.is_approved:
+    if case.is_approved and (case.is_completed==False or case.is_completed and is_owner):
         return render(request, "cases/view.html", context)
     else:
-        return HttpResponseForbidden("You can't view this Case because it is not approved yet.")
+        return HttpResponseForbidden("You can't view this Case because it is not approved yet or it might be completed.")
 
 
 @login_required(login_url='/accounts/login/')
 def report_case(request, id):
     if request.method == "POST":
-        case = Case.objects.filter(id=id)
+        case = Case.objects.filter(id=id,is_completed=False)
         if case.exists():
             case = case.first()
             if not request.user.case_reports.filter(id=case.id).exists():
@@ -135,6 +137,12 @@ def charge(request, id):
                 donation.amount = amount
                 donation.case = case
                 donation.save()
+
+                case_donations = case.donation_set.aggregate(total_amount=Sum('amount'))
+                if case_donations['total_amount'] >= case.total_target:
+                    case.is_completed = True
+                    case.save()
+
                 messages.success(request, 'Thank You. We received your donation successfully')
                 return redirect(request.META['HTTP_REFERER'])
             except stripe.error.CardError as e:
@@ -156,7 +164,7 @@ def vote_case(request):
             if request.POST['vote'] == "voted":
                 case_id = request.POST['case_id']
                 try:
-                    case = Case.objects.get(id=case_id)
+                    case = Case.objects.get(id=case_id,is_completed=False)
                     try:
                         vote = Vote.objects.get(user=request.user, case=case)
                         vote.delete()
