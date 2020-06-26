@@ -64,6 +64,7 @@ class Case(models.Model) :
     is_approved= models.BooleanField(null=True,blank=True)
     is_featured= models.BooleanField(null=True,blank=True)
     featuring_date= models.DateTimeField(null=True,blank=True)
+    is_completed= models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
