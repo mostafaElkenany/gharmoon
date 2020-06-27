@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Sum, Avg
 from users.models import User, Vote
 from cases.models import Case
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.utils.html import strip_tags
+
+from .forms import ContactForm
 
 
 # def home(request):
@@ -22,3 +27,18 @@ def home(request):
         "featured_cases": featured_cases,
     }
     return render(request, "home.html", context)
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data.get('subject')
+            email = form.cleaned_data.get('email')
+            comment = form.cleaned_data.get('comment')
+            body = email + ", sent the following message:\n\n" + strip_tags(comment)
+            send_mail(subject, body,'gharmoon.project@gmail.com', ['gharmoon.project@gmail.com'])
+            return redirect('home')
+    else:
+        form = ContactForm()
+    return render(request, "contact.html", {'form': form})
