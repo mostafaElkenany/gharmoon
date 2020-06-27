@@ -25,6 +25,9 @@
 </head>
 
 <body>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0&appId=3700629733341575&autoLogAppEvents=1" nonce="YXlwlTc2"></script>
+
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -54,6 +57,8 @@
                     <ul class="nav navbar-nav navbar-right ml-auto">
                         <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i
                                     class="fa fa-home"></i><span>Home</span></a></li>
+                        <li class="nav-item"><a href="{% url 'show_cases' %}" class="nav-link"><i 
+                                    class="fa fa-address-card"></i><span>Cases</span></a></li>
                         <li class="nav-item"><a href="{% url 'user_cases'  %}" class="nav-link"><i
                                     class="fa fa-gears"></i><span>My Cases</span></a>
                         </li>

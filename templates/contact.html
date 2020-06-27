@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Contact us {% endblock %}
+
+{% block style %}
+<style>
+    .content-container {
+        padding: 25px 0;
+        max-width: 70%;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, .3)
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container d-flex justify-content-center content-container">
+    <div class="col-7 ">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">
+                <h3>Contact Us</h3>
+            </div>
+            <div class="panel-body">
+                <form action="" method="POST" class="from-group">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div style="text-align: center;">
+                        <button type="submit" class="save btn btn-success">Submit</i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

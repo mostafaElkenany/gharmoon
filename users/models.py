@@ -26,13 +26,23 @@ class Vote(models.Model):
     case = models.ForeignKey('cases.Case', null=True, on_delete=models.CASCADE)
     vote = models.FloatField(null=True)
 
+    def __str__(self):
+        return f"{self.case} || {self.user}"
+    
+
 class Donation(models.Model):
     user= models.ForeignKey('User', null=True, on_delete=models.SET_NULL)
     case = models.ForeignKey('cases.Case', null=True, on_delete=models.CASCADE)
     amount = models.FloatField(null=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.case} || {self.user} || {self.amount} "
     
 class Report(models.Model):
     user= models.ForeignKey('User', null=True, on_delete=models.CASCADE)
     case = models.ForeignKey('cases.Case', null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.case} || {self.user}"
    
