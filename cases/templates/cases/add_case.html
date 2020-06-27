@@ -11,6 +11,10 @@
         border-radius: 3px;
         box-shadow: 0 0 30px rgba(0, 0, 0, .3)
     }
+
+    .tox-notifications-container {
+        display: none !important;
+    }
 </style>
 {% endblock %}
 {% block content %}
@@ -27,7 +31,8 @@
                     {% csrf_token %}
                     {{form|crispy}}
                     <div style="text-align: center;">
-                        <button type="submit" class="save btn btn-success"><i class="fa fa-check" aria-hidden="true"> Create</i></button>
+                        <button type="submit" class="save btn btn-success"><i class="fa fa-check" aria-hidden="true">
+                                Create</i></button>
                     </div>
                 </form>
             </div>

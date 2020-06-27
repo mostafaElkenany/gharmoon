@@ -17,7 +17,16 @@
 
 
 {% block content %}
-
+{% if messages %}
+{% for message in messages %}
+<div class="alert  alert-danger" alert-dismissible fade show role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
 <div class="container" style="font-family: 'Poppins', sans-serif;">
 
     <a href="{% url 'add_case' %}" style="background-color: #03a9f4;" class="btn float-right" role="button">
