@@ -3,7 +3,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.urls import path, include
 from django.contrib import admin
-from .views import home, contact
+from .views import home, contact, about
 from register.views import register, activate
 from django.contrib.auth import views as auth_views
 
@@ -17,7 +17,8 @@ urlpatterns = [
     path('accounts/',include('allauth.urls')),
     path('activate/<slug:uidb64>/<slug:token>/', activate, name='activate'),
     path('', home, name='home'),
-    path('contact/', contact, name='contact')
+    path('contact/', contact, name='contact'),
+    path('about/',about, name='about'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
