@@ -6,12 +6,11 @@ from cases.models import Case
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils.html import strip_tags
+from django.contrib.auth.decorators import login_required
+
 
 from .forms import ContactForm
 
-
-# def home(request):
-#     return render(request, "home.html")
 
 def home(request):
     cases = Case.objects.filter(is_approved=1, is_completed=False)
@@ -19,7 +18,7 @@ def home(request):
     high_voted_set = (
         Vote.objects.values("case_id").annotate(total_votes=Sum('vote')).order_by("-total_votes")[:5]
     )
-    featured_cases = Case.objects.filter(is_featured=1, is_completed=False)
+    featured_cases = Case.objects.filter(is_featured=1, is_completed=False).order_by("-featuring_date")[:5]
     context = {
         "latest_cases": latest_cases,
         "high_voted_set": high_voted_set,
@@ -28,7 +27,7 @@ def home(request):
     }
     return render(request, "home.html", context)
 
-
+@login_required(login_url='/accounts/login/')
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
