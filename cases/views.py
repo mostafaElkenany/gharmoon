@@ -98,7 +98,8 @@ def view_case(request, id):
     if case.is_approved and (case.is_completed==False or case.is_completed and is_owner):
         return render(request, "cases/view.html", context)
     else:
-        return HttpResponseForbidden("You can't view this Case because it is not approved yet or it might be completed.")
+        messages.error(request, "You can't view this Case because it is not approved yet or it might be completed.")
+        return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required(login_url='/accounts/login/')
