@@ -1,2 +1,2 @@
-web: gunicorn gharmoon.wsgi
+web: gunicorn gharmoon.wsgi --log-file -
 
