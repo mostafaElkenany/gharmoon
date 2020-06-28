@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from django.conf import settings
 import environs
-import django_heroku
 
 env = environs.Env()
 env.read_env()
@@ -203,7 +202,3 @@ SOCIALACCOUNT_PROVIDERS = \
             }
         }
     }
-
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())
