@@ -105,9 +105,9 @@
                     <td>{{ case.name }}
                     <td>{{ case.gender }}
                     <td>{{ case.age }}
-                    <td>${{donated_case.sum_donation}}
+                    <td>{{donated_case.sum_donation}} EGP
                         <i class="fa fa-location-arrow" data-toggle="modal" data-target=".bd-example-modal-lg"></i>
-                    <td>${{ case.total_target }}
+                    <td>{{ case.total_target }} EGP
                     <td><a href="{% url 'view_case' case.id %}">see more
                             <i class="fa fa-angle-right"></i>
                         </a>
@@ -145,7 +145,7 @@
                             <tr>
                                 <th>Case Name
                                 <th>Donation
-                                <th>At
+                                <th>Transaction time
                         </thead>
                         <tbody>
                             {% for donated_case in user_all_donations %}
@@ -153,8 +153,8 @@
                             {% if case.id == donated_case.case_id %}
                             <tr>
                                 <td>{{ case.name }}
-                                <td>${{donated_case.amount}}
-                                <td>${{donated_case.created}}
+                                <td>{{donated_case.amount}} EGP
+                                <td>{{donated_case.created}}
                             <tr>
                                 {% endif %}
                                 {% endfor %}

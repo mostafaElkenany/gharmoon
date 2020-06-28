@@ -9,7 +9,7 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>tinymce.init({ selector: 'textarea' });</script>
-
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static "base/style.css" %}">
     <link rel="stylesheet" href="{% static "base/view-case.css" %}">
@@ -25,6 +25,11 @@
 </head>
 
 <body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0&appId=3700629733341575&autoLogAppEvents=1"
+        nonce="YXlwlTc2"></script>
+
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -54,11 +59,13 @@
                     <ul class="nav navbar-nav navbar-right ml-auto">
                         <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i
                                     class="fa fa-home"></i><span>Home</span></a></li>
+                        <li class="nav-item"><a href="{% url 'show_cases' %}" class="nav-link"><i
+                                    class="fa fa-address-card"></i><span>Cases</span></a></li>
                         <li class="nav-item"><a href="{% url 'user_cases'  %}" class="nav-link"><i
                                     class="fa fa-gears"></i><span>My Cases</span></a>
                         </li>
                         <li class="nav-item"><a href="{% url 'advanced_search'  %}" class="nav-link"><i
-                            class="fa fa-search"></i><span>Advanced Search</span></a>
+                                    class="fa fa-search"></i><span>Advanced Search</span></a>
                         </li>
                         <li class="nav-item"><a href="{% url 'user_donations'  %}" class="nav-link"><i
                                     class="fa fa-pie-chart"></i><span>Donations</span></a></li>
@@ -108,8 +115,12 @@
 
     <div class="my-5">
         <div class="footer">
-            <div class="footer-copyright text-center py-1">© 2020 Copyright:
-                <a href="https://github.com/mostafaElkenany/gharmoon.git"> Gharmoon.com</a>
+            <div class="footer-copyright text-center py-1">
+                © 2020 Copyright |
+                <a href="{% url 'about' %}"> About us</a>
+                | 
+                <a href="{% url 'contact' %}"> Contact us</a>
+
             </div>
         </div>
     </div>
@@ -117,7 +128,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>

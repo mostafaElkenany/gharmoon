@@ -39,13 +39,6 @@ def register(request):
             email.send()
             messages.success(request, 'Registerd successfully, Please confirm your email address to complete the registration')
             return redirect("login")
-            # return HttpResponse('Please confirm your email address to complete the registration')
-            # form.save()
-            # email = form.cleaned_data.get('email')
-            # password = form.cleaned_data.get('password1')
-            # user = authenticate(email=email, password=password)
-            # login(request, user)
-            # return redirect('home')
     else:
         form = CustomUserCreationForm()
     return render(request, "registration/register.html", {"form":form})
