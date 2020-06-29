@@ -107,7 +107,7 @@
                     <td>{{ case.name }}</td>
                     <td>{{ case.gender }}</td>
                     <td>{{ case.age }}</td>
-                    <td>${{donated_case.sum_donation}} <i class="fa fa-location-arrow" data-toggle="modal"
+                    <td>{{donated_case.sum_donation}} EGP<i class="fa fa-location-arrow" data-toggle="modal"
                             data-target="#donation-modal-{{case.id}}"></i>
 
                         <!-- Begin Modal -->
@@ -149,7 +149,7 @@
                         <!-- End Modal -->
 
                     </td>
-                    <td>${{ case.total_target }}</td>
+                    <td>{{ case.total_target }} EGP</td>
                     <td><a href="{% url 'view_case' case.id %}">see more
                             <i class="fa fa-angle-right"></i>
                         </a>
